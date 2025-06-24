@@ -1,5 +1,12 @@
 fileFormatVersion: 2
 guid: e49210b2eba9a5442b6fe40c91776cd2
+AssetOrigin:
+  serializedVersion: 1
+  productId: 107098
+  packageName: 2D Game Kit
+  packageVersion: 3.0
+  assetPath: Assets/2DGamekit/Art/Sprites/Environment/FloatingRocks.png
+  uploadId: 680389
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -69,7 +76,7 @@ TextureImporter:
       213: 21300042
     second: FloatingRocks_21
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -86,11 +93,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
-  ignoreMasterTextureLimit: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -129,8 +137,10 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 1
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
-  - serializedVersion: 3
+  - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -140,9 +150,10 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
-  - serializedVersion: 3
+  - serializedVersion: 4
     buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -152,9 +163,10 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
-  - serializedVersion: 3
+  - serializedVersion: 4
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -164,6 +176,20 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
@@ -180,6 +206,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline:
       - - {x: 148, y: 232}
         - {x: 95, y: 243}
@@ -214,6 +241,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline:
       - - {x: -138, y: 358}
         - {x: -138, y: -154}
@@ -242,6 +270,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline:
       - - {x: 97, y: -55.5}
         - {x: 91, y: 278.5}
@@ -269,6 +298,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline:
       - - {x: 95.5, y: -69}
         - {x: 106.5, y: 64}
@@ -316,6 +346,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline:
       - - {x: 52, y: -127.5}
         - {x: 62, y: -121.5}
@@ -359,6 +390,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline:
       - - {x: -39, y: 113.5}
         - {x: -46, y: 107.5}
@@ -397,6 +429,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline:
       - - {x: -133, y: 443}
         - {x: -210, y: 389}
@@ -428,6 +461,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline:
       - - {x: 169, y: -406}
         - {x: 253.54211, y: -96.136475}
@@ -463,6 +497,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline:
       - - {x: 44.5, y: -183.5}
         - {x: 128.5, y: -246.5}
@@ -502,6 +537,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline:
       - - {x: -25, y: 53.5}
         - {x: -30, y: 39.5}
@@ -530,6 +566,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline:
       - - {x: -18.5, y: 53.5}
         - {x: -20.5, y: 45.5}
@@ -561,6 +598,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline:
       - - {x: 7, y: -48.5}
         - {x: 21, y: -48.5}
@@ -589,6 +627,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline:
       - - {x: -21, y: 98.5}
         - {x: -40, y: 92.5}
@@ -619,6 +658,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline:
       - - {x: -40, y: 8.5}
         - {x: -11.902588, y: -8.753433}
@@ -647,6 +687,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline:
       - - {x: 6, y: 37}
         - {x: -11, y: 37}
@@ -677,6 +718,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline:
       - - {x: -18, y: 20}
         - {x: -28, y: 2}
@@ -705,6 +747,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline:
       - - {x: -0.5, y: 49.5}
         - {x: -32.5, y: 42.5}
@@ -735,6 +778,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline:
       - - {x: -4, y: 33.5}
         - {x: -22, y: 18.5}
@@ -764,6 +808,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline:
       - - {x: 24.5, y: 37}
         - {x: 23.5, y: 9}
@@ -797,6 +842,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline:
       - - {x: -18.5, y: 25.5}
         - {x: -21.5, y: 18.5}
@@ -826,6 +872,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline:
       - - {x: -22, y: 52.5}
         - {x: -25, y: 48.5}
@@ -845,6 +892,7 @@ TextureImporter:
       edges: []
       weights: []
     outline: []
+    customData: 
     physicsShape: []
     bones: []
     spriteID: 
@@ -854,38 +902,32 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
     nameFileIdTable:
-      FloatingRocks_18: 21300036
-      FloatingRocks_8: 21300016
-      FloatingRocks_1: 21300002
-      FloatingRocks_5: 21300010
-      FloatingRocks_19: 21300038
       FloatingRocks_0: 21300000
-      FloatingRocks_6: 21300012
-      FloatingRocks_4: 21300008
-      FloatingRocks_21: 21300042
-      FloatingRocks_15: 21300030
-      FloatingRocks_9: 21300018
-      FloatingRocks_14: 21300028
-      FloatingRocks_3: 21300006
-      FloatingRocks_11: 21300022
-      FloatingRocks_16: 21300032
+      FloatingRocks_1: 21300002
       FloatingRocks_10: 21300020
-      FloatingRocks_2: 21300004
+      FloatingRocks_11: 21300022
       FloatingRocks_12: 21300024
-      FloatingRocks_7: 21300014
-      FloatingRocks_17: 21300034
       FloatingRocks_13: 21300026
-  spritePackingTag: 
+      FloatingRocks_14: 21300028
+      FloatingRocks_15: 21300030
+      FloatingRocks_16: 21300032
+      FloatingRocks_17: 21300034
+      FloatingRocks_18: 21300036
+      FloatingRocks_19: 21300038
+      FloatingRocks_2: 21300004
+      FloatingRocks_21: 21300042
+      FloatingRocks_3: 21300006
+      FloatingRocks_4: 21300008
+      FloatingRocks_5: 21300010
+      FloatingRocks_6: 21300012
+      FloatingRocks_7: 21300014
+      FloatingRocks_8: 21300016
+      FloatingRocks_9: 21300018
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 107098
-  packageName: 2D Game Kit
-  packageVersion: 3.0
-  assetPath: Assets/2DGamekit/Art/Sprites/Environment/FloatingRocks.png
-  uploadId: 680389
