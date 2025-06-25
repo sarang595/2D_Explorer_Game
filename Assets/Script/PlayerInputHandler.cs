@@ -5,7 +5,9 @@ public class PlayerInputHandler : MonoBehaviour
     private static PlayerInputHandler instance;
     public static PlayerInputHandler Instance {  get { return instance; } }
     float horizontal;
-    float vertical;
+    bool jump;
+    bool crouching;
+    bool attacking;
 
     private void Awake()
     {
@@ -19,9 +21,13 @@ public class PlayerInputHandler : MonoBehaviour
     public void ReadInput()
     {
         
-        horizontal = Input.GetAxisRaw("Horizontal");
-        vertical = Input.GetAxisRaw("Vertical");
+        horizontal = Input.GetAxis("Horizontal");
+        jump = Input.GetKeyDown(KeyCode.Space);
+        crouching = Input.GetKey(KeyCode.LeftControl);
+        attacking = Input.GetMouseButtonUp(1);
     }
     public float Horizontal() => horizontal;
-    public float Vertical() => vertical;
+    public bool Jump() => jump;
+    public bool Crouching() => crouching;
+    public bool Attacking() => attacking;   
 }
