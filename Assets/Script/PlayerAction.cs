@@ -1,4 +1,5 @@
 using UnityEngine;
+using static PlayerController;
 
 
 public class PlayerAction : MonoBehaviour
@@ -13,40 +14,54 @@ public class PlayerAction : MonoBehaviour
     bool isAttacking = false;
     Vector2 currentcrouchcollidersize;
     Vector2 currentcrouchcollideroffset;
+    [SerializeField] private PlayerAnimation playeranimation;
    
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        playerCollider = rb.GetComponent<CapsuleCollider2D>();
+        playerCollider = GetComponent<CapsuleCollider2D>();
         swordcollider = sword.GetComponent<BoxCollider2D>();
         originalcrouchcollidersize();
         SwordAttackOff();
     }
-    
 
-    public void Idle()
+    private void Update()
     {
-
+        playeranimation.JumpAnim();
+       
     }
-   public void Run()
+
+    public void Run()
     {
-        // Handles Player Movement Logic
+        bool CanRun = PlayerController.Instance.CanRun();
         horizontalInput = PlayerInputHandler.Instance.Horizontal();
-        float moveSpeed = PlayerController.Instance.PlayerSpeed;
-        rb.linearVelocity = new Vector2 (horizontalInput * moveSpeed, rb.linearVelocity.y) ;
+        // Handles Player Movement Logic
+        if (CanRun)
+        {
+           
+            float moveSpeed = PlayerController.Instance.PlayerSpeed;
+            rb.linearVelocity = new Vector2(horizontalInput * moveSpeed, rb.linearVelocity.y);
+            if (playeranimation != null)
+                playeranimation.RunAnim();
+        }
         Flip();
-      
     }
   public void Jump()
     {
         // Handles Player Jump Logic
-        bool jumpInput = PlayerInputHandler.Instance.Jump();
+        if(isAttacking) return;
+       
+        bool CanJump = PlayerController.Instance.CanJump();
         float jumpVelocity = PlayerController.Instance.JumpVelocity;
-        bool canJump = jumpInput && PlayerController.Instance.getLocomotionState() == PlayerController.PlayerLocomotionState.Grounded;
+        bool canJump = CanJump && PlayerController.Instance.getLocomotionState() == PlayerController.PlayerLocomotionState.Grounded;
+        //bool Canjump() => Isjumping();
         if (canJump)
         {
            
             rb.AddForce(Vector2.up * jumpVelocity, ForceMode2D.Impulse);
+            
+
         }
 
     }
@@ -74,50 +89,70 @@ public class PlayerAction : MonoBehaviour
         currentcrouchcollidersize = playerCollider.size;
         currentcrouchcollideroffset = playerCollider.offset;
     }
-   
+
 
     public void Crouch()
     {
-        bool crouchInput = PlayerInputHandler.Instance.Crouching();
-        if (crouchInput && !iscrouched)
+        
+        bool CanCrouch= PlayerController.Instance.CanCrouch();
+        bool CrouchUp = PlayerController.Instance.CrouchUp();
+        playeranimation.CrouchAnim();
+        if (CanCrouch && !iscrouched)
         {
-            currentcrouchcollideroffset.y = playerCollider.offset.y / 2;
-            currentcrouchcollidersize.y = playerCollider.size.y / 2;
+
+            currentcrouchcollideroffset.y = playerCollider.offset.y / 1.5f;
+            currentcrouchcollidersize.y = playerCollider.size.y / 1.5f;
             playerCollider.size = currentcrouchcollidersize;
             playerCollider.offset = currentcrouchcollideroffset;
-            iscrouched =true;
-           
+            iscrouched = true;
+
         }
-        else if (!crouchInput && iscrouched)
+        else if (iscrouched && CrouchUp)
         {
             {
-                currentcrouchcollideroffset.y = playerCollider.offset.y * 2;
-                currentcrouchcollidersize.y = playerCollider.size.y *2;
+
+
+                currentcrouchcollideroffset.y = playerCollider.offset.y * 1.5f;
+                currentcrouchcollidersize.y = playerCollider.size.y * 1.5f;
                 playerCollider.size = currentcrouchcollidersize;
                 playerCollider.offset = currentcrouchcollideroffset;
                 iscrouched = false;
+                
+
+
             }
+            // Update animation based on current crouch state
+            if (playeranimation != null)
+                playeranimation.CrouchAnim();
         }
-       
+
     }
-   
-   
-  public void SwordAttack()
+
+
+    public void SwordAttack()
     {
-        bool attackInput = PlayerInputHandler.Instance.Attacking();
-        if(attackInput && !isAttacking)
+
+        bool canattack = PlayerController.Instance.CanAttack() && PlayerController.Instance.Isgrounded();
+        if (canattack && !isAttacking)
         {
-            sword.gameObject.SetActive(true);
+            playeranimation.AttackAnim();
+            Invoke("SwordAttackOn", 0.2f);
             isAttacking = true;
-            Invoke("SwordAttackOff", 0.1f);
-        }  
-           
+            Invoke("SwordAttackOff", 0.5f);
+        }
+
+    }
+    private void SwordAttackOn()
+    {
+        sword.gameObject.SetActive(true);
     }
     private void SwordAttackOff()
     {
-        
-            sword.gameObject.SetActive(false);
-            isAttacking = false;
        
+        playeranimation.AttackAnim();
+        sword.gameObject.SetActive(false);
+        isAttacking = false;
+
     }
+    public float GetVerticalVelocity() => rb.linearVelocity.y;
 }

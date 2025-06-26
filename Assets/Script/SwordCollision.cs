@@ -6,7 +6,7 @@ public class SwordCollision : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("GG");
+            Destroy(collision.gameObject);
         }
     }
 }

@@ -32,6 +32,17 @@ public class PlayerController : MonoBehaviour
    public PlayerState state;
    public PlayerActionstate actions;
    private bool live = true;
+    private bool playerDead;
+    private bool playerAlive;
+    private bool playerGrounded;
+    private bool playerAttacking;
+    private bool playerCrouching;
+    private bool playerRunning;
+    private bool playerIdle;
+    private bool playerInAir;
+    private bool playerJumping;
+
+
     private void Awake()
     {
         if(instance == null)
@@ -54,21 +65,17 @@ public class PlayerController : MonoBehaviour
    
     void Update()
     {
-       
+        CurrentPlayerState();
         PlayerInputHandler.Instance.ReadInput();
         playerMovement.SwordAttack();
-        playerMovement.Jump();
         playerMovement.Crouch();
-        Debug.Log (getPlayerState().ToString());
-        Debug.Log (getLocomotionState().ToString());
-        Debug.Log(getPlayerActionstate().ToString());
-
+        playerMovement.Jump();
     }
     private void FixedUpdate()
     {
         playerMovement.Run();
+ 
 
-     
     }
     public PlayerLocomotionState getLocomotionState()
     {
@@ -95,47 +102,36 @@ public class PlayerController : MonoBehaviour
         }
         return state;
     }
-    public PlayerActionstate getPlayerActionstate()
-    {
-        bool PlayerDead = getPlayerState() == PlayerState.Dead;
-        bool PlayerAlive = getPlayerState() == PlayerState.Alive;
-        bool PlayerGrounded = getLocomotionState() == PlayerLocomotionState.Grounded;
-        bool PlayerAttacking = PlayerInputHandler.Instance.Attacking();
-        bool PlayerCrouching = PlayerInputHandler.Instance.Crouching();
-        bool PlayerRuning = Mathf.Abs(PlayerInputHandler.Instance.Horizontal()) > 0.01f;
-        bool PlayerInAir = getLocomotionState() == PlayerLocomotionState.InAir;
-
-        if (PlayerDead)
-
-        return PlayerActionstate.death;
-
-        if (PlayerAlive)
-        {
-            if (PlayerGrounded)
-            {
-                if (PlayerAttacking)
-                    return PlayerActionstate.attack;
-
-                if (PlayerCrouching)
-                    return PlayerActionstate.crouch;
-
-                if (PlayerRuning)
-                    return PlayerActionstate.run;
-
-                return PlayerActionstate.idle;
-            }
-            else if (PlayerInAir)
-            {
-                if (PlayerAttacking)
-                    return PlayerActionstate.attack;
-
-                return PlayerActionstate.jump;
-            }
-        }
-
-        return PlayerActionstate.idle;
-    }
    
+
+    private void CurrentPlayerState()
+    {
+        playerDead = getPlayerState() == PlayerState.Dead;
+        playerAlive = getPlayerState() == PlayerState.Alive;
+        playerGrounded = getLocomotionState() == PlayerLocomotionState.Grounded;
+        playerAttacking = PlayerInputHandler.Instance.Attacking();
+        playerCrouching = PlayerInputHandler.Instance.Crouching();
+        playerRunning = Mathf.Abs(PlayerInputHandler.Instance.Horizontal()) > 0.01f;
+        playerIdle = Mathf.Abs(PlayerInputHandler.Instance.Horizontal()) < 0.01f;
+        playerInAir = getLocomotionState() == PlayerLocomotionState.InAir;
+        playerJumping = PlayerInputHandler.Instance.Jump();
+    }
+    // Player State Conditions
+    public bool CanRun() => playerAlive && playerRunning;
+    public bool CanAttack() => playerAlive && playerAttacking && !playerCrouching;
+
+    public bool CanJump() => playerAlive && playerGrounded && playerJumping;
+
+    public bool CanCrouch() => playerAlive && playerGrounded&& playerCrouching;
+     
+    public bool CrouchUp() => playerAlive && playerGrounded && !playerCrouching;
+
+    public bool PlayerinAir() => playerAlive && playerInAir;
+    public bool JumpAttack() => playerAlive && playerAttacking && playerInAir;
+    public bool PlayerAttacking() => playerAttacking;
+
+
+
 
 
 
@@ -155,5 +151,12 @@ public class PlayerController : MonoBehaviour
         }
         return live;
     }
-    
+
+   public float VerticalVelocity()
+    {
+        float CurrentVerticalVelocity = playerMovement.GetVerticalVelocity();
+        return CurrentVerticalVelocity;
+    }
+
+
 }
