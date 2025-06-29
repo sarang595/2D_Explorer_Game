@@ -41,6 +41,8 @@ public class PlayerController : MonoBehaviour
     private bool playerIdle;
     private bool playerInAir;
     private bool playerJumping;
+    private bool landingFrame;
+    private bool wasGrounded; // Track previous frame's grounded state
 
 
     private void Awake()
@@ -70,11 +72,13 @@ public class PlayerController : MonoBehaviour
         playerMovement.SwordAttack();
         playerMovement.Crouch();
         playerMovement.Jump();
+        Debug.Log(getLocomotionState().ToString());
+        
     }
     private void FixedUpdate()
     {
         playerMovement.Run();
- 
+        
 
     }
     public PlayerLocomotionState getLocomotionState()
@@ -109,15 +113,19 @@ public class PlayerController : MonoBehaviour
         playerDead = getPlayerState() == PlayerState.Dead;
         playerAlive = getPlayerState() == PlayerState.Alive;
         playerGrounded = getLocomotionState() == PlayerLocomotionState.Grounded;
-        playerAttacking = PlayerInputHandler.Instance.Attacking();
-        playerCrouching = PlayerInputHandler.Instance.Crouching();
-        playerRunning = Mathf.Abs(PlayerInputHandler.Instance.Horizontal()) > 0.01f;
-        playerIdle = Mathf.Abs(PlayerInputHandler.Instance.Horizontal()) < 0.01f;
         playerInAir = getLocomotionState() == PlayerLocomotionState.InAir;
+        playerIdle = Mathf.Abs(PlayerInputHandler.Instance.Horizontal()) < 0.01f;
+        playerRunning = Mathf.Abs(PlayerInputHandler.Instance.Horizontal()) > 0.01f;
+        playerAttacking = PlayerInputHandler.Instance.Attacking();
         playerJumping = PlayerInputHandler.Instance.Jump();
+        playerCrouching = PlayerInputHandler.Instance.Crouching();
+       
+        
+       
+       
     }
     // Player State Conditions
-    public bool CanRun() => playerAlive && playerRunning;
+    public bool CanRun() => playerAlive && playerRunning && !playerCrouching;
     public bool CanAttack() => playerAlive && playerAttacking && !playerCrouching;
 
     public bool CanJump() => playerAlive && playerGrounded && playerJumping;
@@ -130,6 +138,11 @@ public class PlayerController : MonoBehaviour
     public bool JumpAttack() => playerAlive && playerAttacking && playerInAir;
     public bool PlayerAttacking() => playerAttacking;
 
+    public bool PlayerGrounded() => playerGrounded;
+
+    public bool Jumping() => playerAlive && playerJumping;
+    public bool Crouching() => playerAlive && playerCrouching;
+    
 
 
 
@@ -156,6 +169,14 @@ public class PlayerController : MonoBehaviour
     {
         float CurrentVerticalVelocity = playerMovement.GetVerticalVelocity();
         return CurrentVerticalVelocity;
+    }
+    private void OnDrawGizmos()
+    {
+        if (GroundChecker != null)
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireSphere(GroundChecker.position, GroundRadius);
+        }
     }
 
 

@@ -8,6 +8,7 @@ public class PlayerInputHandler : MonoBehaviour
     bool jump;
     bool crouching;
     bool attacking;
+    int RightMouseClick = 1;
 
     private void Awake()
     {
@@ -20,11 +21,10 @@ public class PlayerInputHandler : MonoBehaviour
     }
     public void ReadInput()
     {
-        
-        horizontal = Input.GetAxis("Horizontal");
-        jump = Input.GetKeyDown(KeyCode.Space);
-        crouching = Input.GetKey(KeyCode.LeftControl);
-        attacking = Input.GetMouseButtonUp(1);
+        horizontal = Input.GetAxis("Horizontal"); //Handles Run
+        jump = Input.GetKeyDown(KeyCode.Space); //Handles Jump
+        crouching = Input.GetKey(KeyCode.LeftControl); //Handles Crouch
+        attacking = Input.GetMouseButtonUp(RightMouseClick); //Right MouseClick Handles SwordAttack
     }
     public float Horizontal() => horizontal;
     public bool Jump() => jump;

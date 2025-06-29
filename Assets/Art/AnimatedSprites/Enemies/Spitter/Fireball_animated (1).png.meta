@@ -1,20 +1,25 @@
 fileFormatVersion: 2
-guid: c152f8f2446244548aadd2bb39e31ca1
-AssetOrigin:
-  serializedVersion: 1
-  productId: 107098
-  packageName: 2D Game Kit
-  packageVersion: 3.0
-  assetPath: Assets/2DGamekit/Art/Sprites/VFX/Environment/SplashDrops.png
-  uploadId: 680389
+guid: 8399035c442ee4f48928668834fa269a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 21300000
-    second: SplashDrops_0
+      213: 2314032752286657055
+    second: Fireball_animated (1)_0
   - first:
-      213: 21300002
-    second: SplashDrops_1
+      213: -8445266137682673704
+    second: Fireball_animated (1)_1
+  - first:
+      213: 6206187319534580989
+    second: Fireball_animated (1)_2
+  - first:
+      213: 9052344347959278853
+    second: Fireball_animated (1)_3
+  - first:
+      213: 4519571613707778396
+    second: Fireball_animated (1)_4
+  - first:
+      213: 7888674357029239209
+    second: Fireball_animated (1)_5
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -52,16 +57,16 @@ TextureImporter:
     mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: 0
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 256
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -76,9 +81,9 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
   ignorePngGamma: 0
-  applyGammaDecoding: 1
+  applyGammaDecoding: 0
   swizzle: 50462976
-  cookieLightType: 1
+  cookieLightType: 0
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
@@ -107,19 +112,6 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
-  - serializedVersion: 4
     buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -136,45 +128,133 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SplashDrops_0
+      name: Fireball_animated (1)_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 128
-        width: 256
-        height: 128
+        x: 183
+        y: 540
+        width: 198
+        height: 341
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 02305410000000000800000000000000
-      internalID: 21300000
+      spriteID: f1a6aa627881d1020800000000000000
+      internalID: 2314032752286657055
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SplashDrops_1
+      name: Fireball_animated (1)_1
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 256
-        height: 128
+        x: 621
+        y: 539
+        width: 257
+        height: 365
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 22305410000000000800000000000000
-      internalID: 21300002
+      spriteID: 8dff9c551336cca80800000000000000
+      internalID: -8445266137682673704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fireball_animated (1)_2
+      rect:
+        serializedVersion: 2
+        x: 1080
+        y: 542
+        width: 217
+        height: 361
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df4746e3c7ec02650800000000000000
+      internalID: 6206187319534580989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fireball_animated (1)_3
+      rect:
+        serializedVersion: 2
+        x: 197
+        y: 96
+        width: 170
+        height: 332
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50db0ac193360ad70800000000000000
+      internalID: 9052344347959278853
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fireball_animated (1)_4
+      rect:
+        serializedVersion: 2
+        x: 623
+        y: 95
+        width: 206
+        height: 349
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c59bdfbdf6eb8be30800000000000000
+      internalID: 4519571613707778396
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fireball_animated (1)_5
+      rect:
+        serializedVersion: 2
+        x: 1079
+        y: 99
+        width: 193
+        height: 326
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a9f57f18833a7d60800000000000000
+      internalID: 7888674357029239209
       vertices: []
       indices: 
       edges: []
@@ -183,7 +263,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -193,8 +273,12 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      SplashDrops_0: 21300000
-      SplashDrops_1: 21300002
+      Fireball_animated (1)_0: 2314032752286657055
+      Fireball_animated (1)_1: -8445266137682673704
+      Fireball_animated (1)_2: 6206187319534580989
+      Fireball_animated (1)_3: 9052344347959278853
+      Fireball_animated (1)_4: 4519571613707778396
+      Fireball_animated (1)_5: 7888674357029239209
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
