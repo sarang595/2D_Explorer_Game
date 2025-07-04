@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     public enum PlayerLocomotionState { Grounded, InAir}
 
     //Represents player action
-    public enum PlayerActionstate { idle,run,crouch,jump,attack,death }
+    public enum PlayerActionstate { idle,run,crouch,jump,attack,push,death }
 
     private static PlayerController instance;
     public static PlayerController Instance {  get { return instance; } }
@@ -41,9 +41,10 @@ public class PlayerController : MonoBehaviour
     private bool playerIdle;
     private bool playerInAir;
     private bool playerJumping;
+    private bool playerpushing;
     private bool landingFrame;
     private bool wasGrounded; // Track previous frame's grounded state
-
+    private bool PushPower=false;
 
     private void Awake()
     {
@@ -119,6 +120,7 @@ public class PlayerController : MonoBehaviour
         playerAttacking = PlayerInputHandler.Instance.Attacking();
         playerJumping = PlayerInputHandler.Instance.Jump();
         playerCrouching = PlayerInputHandler.Instance.Crouching();
+        playerpushing = PlayerInputHandler.Instance.Pushing();
        
         
        
@@ -142,7 +144,10 @@ public class PlayerController : MonoBehaviour
 
     public bool Jumping() => playerAlive && playerJumping;
     public bool Crouching() => playerAlive && playerCrouching;
-    
+
+    public bool CanPush() => playerAlive && playerGrounded && playerpushing;
+
+
 
 
 
@@ -179,5 +184,26 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.CompareTag("PushTrigger"))
+        {
+            PushPower = true;
+        }
+    }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("PushTrigger"))
+        {
+            PushPower = true;
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("PushTrigger"))
+        {
+            PushPower = false;
+        }
+    }
+    public bool CanPushPower() => PushPower;
 }

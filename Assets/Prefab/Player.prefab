@@ -131,8 +131,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.035633147, y: 1.002609}
-  m_Size: {x: 0.62716186, y: 2.0982833}
+  m_Offset: {x: 0.031750202, y: 1.01908}
+  m_Size: {x: 0.8368511, y: 2.0653412}
   m_Direction: 0
 --- !u!114 &2509631205917638665
 MonoBehaviour:
@@ -153,8 +153,8 @@ MonoBehaviour:
   GroundRadius: 0.5
   playerMovement: {fileID: 4290038625489729004}
   PlayerHealth: 10
-  PlayerSpeed: 6
-  JumpVelocity: 11
+  PlayerSpeed: 8
+  JumpVelocity: 12
   locomotionState: 0
   state: 0
   actions: 0
@@ -219,10 +219,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.9
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1.8
+  m_GravityScale: 2
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -232,7 +232,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &7233554068934121056
 MonoBehaviour:

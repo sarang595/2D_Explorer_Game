@@ -18,6 +18,7 @@ public class PlayerAction : MonoBehaviour
     Vector2 currentcrouchcollideroffset;
     [SerializeField] private PlayerAnimation playeranimation;
     private Coroutine swordCoroutine;
+    bool Jumped =false;
 
     private void Start()
     {
@@ -33,7 +34,7 @@ public class PlayerAction : MonoBehaviour
 
         JumpAttack();
 
-
+       // Debug.Log(rb.linearVelocity.y);
 
     }
 
@@ -71,9 +72,10 @@ public class PlayerAction : MonoBehaviour
         {
            
             rb.AddForce(Vector2.up * jumpVelocity, ForceMode2D.Impulse);
-            
+            Jumped = true;
 
         }
+       
 
     }
   public void Flip()
