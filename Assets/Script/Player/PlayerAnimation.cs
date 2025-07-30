@@ -4,12 +4,15 @@ using static PlayerController;
 
 public class PlayerAnimation : MonoBehaviour
 {
-    [SerializeField] private Animator PlayerAnimator;
+    private Animator PlayerAnimator;
+    private PlayerAction PlayerAction;
     bool flyAttack = false;
     bool PushPower;
     private void Start()
     {
         PushPower = false;
+        PlayerAnimator = GetComponent<Animator>();
+        PlayerAction = GetComponent<PlayerAction>();
     }
     private void Update()
     {
@@ -40,7 +43,8 @@ public class PlayerAnimation : MonoBehaviour
        
 
       
-        float CurrentJumpVelocity = PlayerController.Instance.VerticalVelocity();
+      
+        float CurrentJumpVelocity = PlayerAction.GetVerticalVelocity();
         bool inAir = PlayerController.Instance.PlayerinAir();
         bool grounded = PlayerController.Instance.PlayerGrounded();
         bool attacking = PlayerController.Instance.PlayerAttacking();
@@ -90,7 +94,7 @@ public class PlayerAnimation : MonoBehaviour
         PlayerAnimator.SetBool("Isattack", true);
 
         //  wait for the current attack animation duration
-        yield return new WaitForSeconds(PlayerAnimator.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitForSeconds(0.5f);
 
         PlayerAnimator.SetBool("Isattack", false);
         flyAttack =false;

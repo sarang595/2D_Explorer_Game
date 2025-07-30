@@ -1,7 +1,10 @@
 using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class PlayerController : MonoBehaviour
+
+public class PlayerController : PlayerService <PlayerController>
 {
     //Represents Player Health/Life State
     public enum PlayerState { Alive,Dead}
@@ -12,26 +15,25 @@ public class PlayerController : MonoBehaviour
     //Represents player action
     public enum PlayerActionstate { idle,run,crouch,jump,attack,push,death }
 
-    private static PlayerController instance;
-    public static PlayerController Instance {  get { return instance; } }
-
-    
-
     [Header("Player Locomotion checker")]
     [SerializeField] Transform GroundChecker;
     [SerializeField] LayerMask GroundLayer;
     [SerializeField] float GroundRadius;
 
    [Header("Player Components")]
-   [SerializeField] private PlayerAction playerMovement;
    [SerializeField] public float PlayerHealth;
    [SerializeField] public float PlayerSpeed;
    [SerializeField] public float JumpVelocity;
 
-   public PlayerLocomotionState locomotionState;
-   public PlayerState state;
-   public PlayerActionstate actions;
-   private bool live = true;
+    [Header("Spawn Settings")]
+    [SerializeField] private bool shouldSpawnOnStart = true;
+    [SerializeField] private Vector3 defaultSpawnPosition = Vector3.zero;
+
+
+    public PlayerLocomotionState locomotionState;
+    public PlayerState state;
+    public PlayerActionstate actions;
+    private bool live = true;
     private bool playerDead;
     private bool playerAlive;
     private bool playerGrounded;
@@ -48,40 +50,92 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        if(instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);    
-        }
+              
+            // Subscribe to scene loaded event
+            SceneManager.sceneLoaded += OnSceneLoaded;
+       
         
     }
 
     void Start()
     {
+     
+
+        if (shouldSpawnOnStart)
+        {
+            SpawnPlayer();
+        }
+
         
     }
 
-   
+    private void OnDestroy()
+    {
+        // Unsubscribe from scene loaded event to prevent memory leaks
+        if (Instance == this)
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        
+        // Move player to the new scene's hierarchy
+        SceneManager.MoveGameObjectToScene(gameObject, scene);
+        StartCoroutine(SpawnPlayerDelayed());
+    }
+
+    private IEnumerator SpawnPlayerDelayed()
+    {
+        yield return new WaitForEndOfFrame(); // Wait for scene to fully load
+      
+        SpawnPlayer();
+    }
+
+    private void SpawnPlayer()
+    {
+        // Try to find a spawn point in the current scene
+        PlayerSpawnPoint spawnPoint = FindFirstObjectByType<PlayerSpawnPoint>();
+
+        if (spawnPoint != null)
+        {
+            // Disable CharacterController/Rigidbody2D temporarily to prevent physics issues
+            CharacterController controller = GetComponent<CharacterController>();
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            
+            if (controller != null) controller.enabled = false;
+            
+            // Spawn at the designated spawn point
+            transform.position = spawnPoint.GetSpawnPosition();
+            transform.rotation = spawnPoint.GetSpawnRotation();
+
+            // Re-enable components
+            if (controller != null) controller.enabled = true;
+
+          
+            
+            Debug.Log($"Player spawned at: {transform.position} in scene: {SceneManager.GetActiveScene().name}");
+        }
+        else
+        {
+            // Fallback to default spawn position
+            transform.position = defaultSpawnPosition;
+            transform.rotation = Quaternion.identity;
+
+            Debug.LogWarning($"No PlayerSpawnPoint found in scene '{SceneManager.GetActiveScene().name}'. Using default spawn position: {defaultSpawnPosition}");
+        }
+    }
+
+  
     void Update()
     {
         CurrentPlayerState();
         PlayerInputHandler.Instance.ReadInput();
-        playerMovement.SwordAttack();
-        playerMovement.Crouch();
-        playerMovement.Jump();
         Debug.Log(getLocomotionState().ToString());
         
     }
-    private void FixedUpdate()
-    {
-        playerMovement.Run();
-        
-
-    }
+    
     public PlayerLocomotionState getLocomotionState()
     {
         if(Isgrounded())
@@ -122,9 +176,6 @@ public class PlayerController : MonoBehaviour
         playerCrouching = PlayerInputHandler.Instance.Crouching();
         playerpushing = PlayerInputHandler.Instance.Pushing();
        
-        
-       
-       
     }
     // Player State Conditions
     public bool CanRun() => playerAlive && playerRunning && !playerCrouching;
@@ -148,11 +199,6 @@ public class PlayerController : MonoBehaviour
     public bool CanPush() => playerAlive && playerGrounded && playerpushing;
 
 
-
-
-
-
-
     public bool Isgrounded()
     {
         return Physics2D.OverlapCircle(GroundChecker.position, GroundRadius, GroundLayer);
@@ -170,11 +216,7 @@ public class PlayerController : MonoBehaviour
         return live;
     }
 
-   public float VerticalVelocity()
-    {
-        float CurrentVerticalVelocity = playerMovement.GetVerticalVelocity();
-        return CurrentVerticalVelocity;
-    }
+   
     private void OnDrawGizmos()
     {
         if (GroundChecker != null)
@@ -195,7 +237,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("PushTrigger"))
         {
-            PushPower = true;
+            PushPower = true;       
         }
     }
     private void OnTriggerExit2D(Collider2D collision)

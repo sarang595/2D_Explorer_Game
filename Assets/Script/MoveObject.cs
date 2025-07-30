@@ -3,44 +3,40 @@ using UnityEngine;
 public class MoveObject : MonoBehaviour
 {
     Rigidbody2D rb2;
+    bool playerPushing = false;
+    Transform player;
     private void Start()
     {
+        player = PlayerController.Instance.transform;
         rb2 = GetComponent<Rigidbody2D>();
-        //rb2.bodyType = RigidbodyType2D.Kinematic;
+        rb2.bodyType = RigidbodyType2D.Kinematic;
     }
     private void Update()
     {
-       // Moveobj();
+        UpdatePhysics();
     }
-    public void Moveobj()
+   private void UpdatePhysics()
     {
         bool moveable = PlayerController.Instance.CanPush();
-        if (moveable)
+
+        if (moveable && playerPushing)
         {
             rb2.bodyType = RigidbodyType2D.Dynamic;
         }
         else
         {
             rb2.bodyType = RigidbodyType2D.Kinematic;
+            rb2.linearVelocity = Vector2.zero;
         }
-
     }
-
+    
     private void OnCollisionStay2D(Collision2D collision)
     {
-        bool moveable = PlayerController.Instance.CanPush();
-        if (collision.gameObject.CompareTag("Player"))
+       
+        if (collision.gameObject.transform==player)
         {
-
-          
-            if (moveable)
-            {
-                rb2.bodyType = RigidbodyType2D.Dynamic;
-            }
-            else
-            {
-                rb2.bodyType = RigidbodyType2D.Kinematic;
-            }
+            playerPushing = true;
         }
     }
+    
 }

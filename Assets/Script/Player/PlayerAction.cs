@@ -16,13 +16,14 @@ public class PlayerAction : MonoBehaviour
     bool isAttacking = false;
     Vector2 currentcrouchcollidersize;
     Vector2 currentcrouchcollideroffset;
-    [SerializeField] private PlayerAnimation playeranimation;
+    private PlayerAnimation playeranimation;
     private Coroutine swordCoroutine;
     bool Jumped =false;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        playeranimation = GetComponent<PlayerAnimation>();
         playerCollider = GetComponent<CapsuleCollider2D>();
         swordcollider = sword.GetComponent<BoxCollider2D>();
         originalcrouchcollidersize();
@@ -33,8 +34,17 @@ public class PlayerAction : MonoBehaviour
     {
 
         JumpAttack();
+        SwordAttack();
+        Crouch();
+        Jump();
 
-       // Debug.Log(rb.linearVelocity.y);
+        // Debug.Log(rb.linearVelocity.y);
+
+    }
+    private void FixedUpdate()
+    {
+       Run();
+
 
     }
 
@@ -207,6 +217,7 @@ public class PlayerAction : MonoBehaviour
     private IEnumerator EnableSwordAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
+     
         FlySwordAttackOn();
         swordCoroutine = null;
     }

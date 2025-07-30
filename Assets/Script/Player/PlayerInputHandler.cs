@@ -1,9 +1,8 @@
 using UnityEngine;
 
-public class PlayerInputHandler : MonoBehaviour
+public class PlayerInputHandler : PlayerService<PlayerInputHandler>
 {
-    private static PlayerInputHandler instance;
-    public static PlayerInputHandler Instance {  get { return instance; } }
+    
     float horizontal;
     bool jump;
     bool crouching;
@@ -11,15 +10,7 @@ public class PlayerInputHandler : MonoBehaviour
     bool attacking;
     int RightMouseClick = 1;
 
-    private void Awake()
-    {
-        if(instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else { Destroy(gameObject); }
-    }
+   
     public void ReadInput()
     {
         horizontal = Input.GetAxis("Horizontal"); //Handles Run
