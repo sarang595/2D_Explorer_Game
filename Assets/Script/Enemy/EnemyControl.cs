@@ -35,6 +35,8 @@ public class EnemyControl : MonoBehaviour
     private bool isAttacking = false;
     Vector2 toPlayer;
     bool isChase = false;
+    float Attackcount = 0;
+
     public enum EnemyMode { Patrol, Survilance }
     [SerializeField] public EnemyMode enemyMode = EnemyMode.Patrol; // Only this will show in inspector
     private void Start()
@@ -47,7 +49,7 @@ public class EnemyControl : MonoBehaviour
     private async void Update()
     {
         PatrolCheck();
-        //EnemyMaxDirection();
+    
         await PlayerenteredBoundary();
 
         if (attackTimer > 0f)
@@ -86,6 +88,7 @@ public class EnemyControl : MonoBehaviour
         {
             FacingRight = transform.localScale.x > 0;
             getDirection();
+        
         }
     }
 
@@ -193,6 +196,39 @@ public class EnemyControl : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawLine(transform.position, transform.position + edgeRight * FovRadius);
         Gizmos.DrawLine(transform.position, transform.position + edgeLeft * FovRadius);
+
+        // Draw Patrol Distance Points WITHOUT reassigning their values!
+        if(enemyMode == EnemyMode.Patrol)
+        {
+            Vector2 VisualPosA = transform.position;
+            Vector2 VisualPosB;
+            if (Application.isPlaying)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireSphere(PosA, 0.2f);
+                Gizmos.DrawWireSphere(PosB, 0.2f);
+                Gizmos.DrawLine(PosA, PosB);
+            }
+            else
+            {
+                if (FacingRight)
+                {
+                    VisualPosB = VisualPosA + Vector2.right * PatrolDistance;
+                }
+                else
+                {
+                    VisualPosB = VisualPosA + Vector2.left * PatrolDistance;
+                }
+                // Draw preview patrol points
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireSphere(VisualPosA, 0.2f);
+                Gizmos.DrawWireSphere(VisualPosB, 0.2f);
+                Gizmos.DrawLine(VisualPosA, VisualPosB);
+
+            }
+
+        }
+
 
 #if UNITY_EDITOR
         // Draw the FOV arc (requires UnityEditor)
@@ -307,7 +343,7 @@ public class EnemyControl : MonoBehaviour
         Vector2 EnemyPosition = new Vector2(transform.position.x, transform.position.y);
         Vector2 PlayerPosition = new Vector2(Player.gameObject.transform.position.x, Player.gameObject.transform.position.y);
         float distanceToPlayer = Vector2.Distance(EnemyPosition, PlayerPosition);
-        //float angleToPlayer = Vector2.SignedAngle(Forward, toPlayer);
+       
         //Debug.Log("angleToPlayer" + angleToPlayer);
 
         //// Checks the Distance between player and enemy is less than declared radius to figure out player is inside the boundary or not
@@ -330,7 +366,7 @@ public class EnemyControl : MonoBehaviour
             if (!isAttacking && attackTimer <= 0f)
             {
                 isAttacking = true;
-                await Attack();
+                await AttackExecution();
                 isAttacking = false;
             }
                  
@@ -342,7 +378,7 @@ public class EnemyControl : MonoBehaviour
                 if (!isAttacking && attackTimer <= 0f)
                 {
                     isAttacking = true;
-                    await Attack();
+                    await AttackExecution();
                     isAttacking = false;
                 }
 
@@ -351,7 +387,29 @@ public class EnemyControl : MonoBehaviour
         {
             CanPatrol = true;
             IsPlayerEntered = false;
+            isChase = false;
 
+        }
+
+    }
+    
+    private async Awaitable AttackExecution()
+    {
+        //Attack rest between each round, 1.5f hold after every Attacktime projectile
+        float Attacktime = UnityEngine.Random.Range(3f, 5f);
+        if (Attackcount < Attacktime)
+        {
+          
+            await Attack();
+        }
+        else 
+        {
+            EnemyAimation.SetBool("IsSplitterIdle", true);
+            await Awaitable.WaitForSecondsAsync(1.5f);
+            EnemyAimation.SetBool("IsSplitterIdle", false);
+            Attackcount = 0;
+            await Attack();
+          
         }
 
     }
@@ -359,14 +417,22 @@ public class EnemyControl : MonoBehaviour
     {
         /*Projectile initiated from ProjectileBehaviour after 1f sec of attack animation set to true
         /and animation diabled after 0.5f of projectile initialization*/
-        EnemyAimation.SetBool("IsSplitterAttack", true);
-        await Awaitable.WaitForSecondsAsync(1f);
-        ProjectileBehaviour projectile = Instantiate(Projectile, ProjectilePos.position, ProjectilePos.rotation).GetComponent<ProjectileBehaviour>();
-        projectile.InitializeProjectile(Player, Projectileforce);
-        await Awaitable.WaitForSecondsAsync(0.5f);
-        EnemyAimation.SetBool("IsSplitterAttack", false);
-        EnemyAimation.SetBool("isSplitterAttackDown", true);
-        attackTimer = attackCooldown;
+    
+        
+            EnemyAimation.SetBool("IsSplitterAttack", true);
+            await Awaitable.WaitForSecondsAsync(1f);
+            ProjectileBehaviour projectile = Instantiate(Projectile, ProjectilePos.position, ProjectilePos.rotation).GetComponent<ProjectileBehaviour>();
+            projectile.InitializeProjectile(Player, Projectileforce);
+            await Awaitable.WaitForSecondsAsync(0.5f);
+            EnemyAimation.SetBool("IsSplitterAttack", false);
+            EnemyAimation.SetBool("isSplitterAttackDown", true);
+            EnemyAimation.SetBool("IsSplitterWalk", false);
+            attackTimer = attackCooldown;
+            Attackcount++;
+
+        
+   
+       
     }
 
 }

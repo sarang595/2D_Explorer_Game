@@ -1,149 +1,110 @@
 using System.Collections;
 using UnityEngine;
-using static PlayerController;
 
 public class PlayerAnimation : MonoBehaviour
 {
     private Animator PlayerAnimator;
     private PlayerAction PlayerAction;
-    bool flyAttack = false;
+    private bool flyAttack = false;
     bool PushPower;
+    private Coroutine airAttackCoroutine;
+
     private void Start()
     {
-        PushPower = false;
         PlayerAnimator = GetComponent<Animator>();
         PlayerAction = GetComponent<PlayerAction>();
     }
+
     private void Update()
     {
-     JumpAnim();
-     PushAnim();
+        RunAnim();
+        JumpAnim();
+        PushAnim();
     }
+
     public void RunAnim()
     {
+        bool canRun = PlayerController.Instance.CanRun() && !PlayerController.Instance.Crouching();
+        float horizontalValue = PlayerInputHandler.Instance.Horizontal();
 
-        bool CanRun = PlayerController.Instance.CanRun() && !PlayerController.Instance.Crouching();
-        
-
-
-        if (CanRun)
-        {
-            float horizontalValue = PlayerInputHandler.Instance.Horizontal();
-            PlayerAnimator.SetFloat("MoveSpeed", Mathf.Abs(horizontalValue));
-        }
-        else
-        {
-            PlayerAnimator.SetFloat("MoveSpeed", 0);
-        }
-       
-
+        PlayerAnimator.SetFloat("MoveSpeed", canRun ? Mathf.Abs(horizontalValue) : 0f);
     }
+
     public void JumpAnim()
     {
-       
-
-      
-      
-        float CurrentJumpVelocity = PlayerAction.GetVerticalVelocity();
+        float currentJumpVelocity = PlayerAction.GetVerticalVelocity();
         bool inAir = PlayerController.Instance.PlayerinAir();
         bool grounded = PlayerController.Instance.PlayerGrounded();
         bool attacking = PlayerController.Instance.PlayerAttacking();
-      
 
-     
-
-        // Set IsJump if the player is not grounded (i.e., in the air)
-        PlayerAnimator.SetBool("IsJump", inAir);
-        if (inAir&&!grounded)
+       
+        if (!flyAttack)
         {
-           
-            bool isjumpup = CurrentJumpVelocity > 0.1f;
-            bool isFalling = CurrentJumpVelocity < -0.1f;
+            PlayerAnimator.SetBool("IsJump", inAir);
 
-            // Set JumpUP if the player is moving upwards
-            PlayerAnimator.SetBool("JumpUP", isjumpup);
-            
-            // Set JumpDown if the player is moving downwards
-             PlayerAnimator.SetBool("JumpDown", isFalling);
-            
+            if (inAir && !grounded)
+            {
+                PlayerAnimator.SetBool("JumpUP", currentJumpVelocity > 0.1f);
+                PlayerAnimator.SetBool("JumpDown", currentJumpVelocity < -0.1f);
+            }
+            else
+            {
+                PlayerAnimator.SetBool("JumpUP", false);
+                PlayerAnimator.SetBool("JumpDown", false);
+            }
         }
-        else
-        {
-           
-            PlayerAnimator.SetBool("JumpUP", false);
 
-            // Set JumpDown if the player is moving downwards
+        // Handle in-air attack: interrupts jump/fall anims immediately, prevents overlap
+        if (attacking && inAir && !flyAttack)
+        {
+            // Cancel jump/fall anims
+            PlayerAnimator.SetBool("JumpUP", false);
             PlayerAnimator.SetBool("JumpDown", false);
 
+            // Start the air attack animation coroutine if not already running
+            airAttackCoroutine = StartCoroutine(PlayerAirAttack());
         }
-       
-
-        if (attacking && inAir)
-        {
-          StartCoroutine(PlayerAirAttack());
-        }
-
-       
-
     }
-   
-    public IEnumerator PlayerAirAttack()
+
+    private IEnumerator PlayerAirAttack()
     {
+       
         flyAttack = true;
-        yield return new WaitForSeconds(0.48f);
         PlayerAnimator.SetBool("Isattack", true);
 
-        //  wait for the current attack animation duration
+        // Keep attack anim for only a short duration for “real-time” response
         yield return new WaitForSeconds(0.5f);
 
         PlayerAnimator.SetBool("Isattack", false);
-        flyAttack =false;
-       
+        flyAttack = false;
+        airAttackCoroutine = null;
     }
 
-    
-
+    // This can still be called for ground attacks.
     public void AttackAnim()
     {
-        bool canattack = PlayerController.Instance.CanAttack() ;
-      
-        if (canattack)
-        {
-          PlayerAnimator.SetBool("Isattack", canattack);
-
-        }
-        else
-        {
-            PlayerAnimator.SetBool("Isattack", false);
-        }
-       
-      
+        bool canAttack = PlayerController.Instance.CanAttack();
+        PlayerAnimator.SetBool("Isattack", canAttack);
     }
-    
 
     public void CrouchAnim()
     {
-        bool CanCrouch = PlayerController.Instance.CanCrouch();
-      
-        if (CanCrouch )
-        {
-            PlayerAnimator.SetBool("IsCrouch", CanCrouch);
-            PlayerAnimator.SetFloat("MoveSpeed", 0);
-        }
-        else
-        {
-            PlayerAnimator.SetBool("IsCrouch", false);
-        }
+        bool canCrouch = PlayerController.Instance.CanCrouch();
+        PlayerAnimator.SetBool("IsCrouch", canCrouch);
+        if (canCrouch)
+        PlayerAnimator.SetFloat("MoveSpeed", 0);
     }
+
     public void PushAnim()
     {
+       
         PushPower = PlayerController.Instance.CanPushPower();
         if (PushPower)
         {
             float horizontalValue = PlayerInputHandler.Instance.Horizontal();
             bool CanPush = PlayerController.Instance.CanPush();
 
-            // Set IsPush based on CanPush
+            // Set IsPush based on PushPower
             PlayerAnimator.SetBool("IsPush", CanPush);
 
             // Only set IsPushMove if we can push AND there's horizontal input
@@ -167,9 +128,9 @@ public class PlayerAnimation : MonoBehaviour
             PlayerAnimator.SetBool("IsPushMove", false);
 
         }
-
     }
+
     public bool FlyAttack() => flyAttack;
 
-
+   
 }

@@ -180,7 +180,7 @@ MonoBehaviour:
     m_Bits: 64
   GroundRadius: 0.5
   PlayerHealth: 10
-  PlayerSpeed: 9
+  PlayerSpeed: 7
   JumpVelocity: 22.5
   shouldSpawnOnStart: 1
   defaultSpawnPosition: {x: 0, y: 0, z: 0}
@@ -396,7 +396,7 @@ Transform:
   m_GameObject: {fileID: 7101675465846317492}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.70962906, y: 3.1499996, z: -10}
+  m_LocalPosition: {x: 1.0103683, y: 3.1799998, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -427,7 +427,7 @@ MonoBehaviour:
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 34
-    OrthographicSize: 7
+    OrthographicSize: 6.5
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -543,7 +543,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.13313389, y: -0.04722327}
+  m_Offset: {x: 0.4081416, y: -0.04722327}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -553,7 +553,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.2662678, y: 0.6536945}
+  m_Size: {x: 1.8162832, y: 0.6536945}
   m_EdgeRadius: 0
 --- !u!114 &8854474252750169946
 MonoBehaviour:

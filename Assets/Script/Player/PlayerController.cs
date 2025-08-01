@@ -47,7 +47,7 @@ public class PlayerController : PlayerService <PlayerController>
     private bool landingFrame;
     private bool wasGrounded; // Track previous frame's grounded state
     private bool PushPower=false;
-
+   
     private void Awake()
     {
               
@@ -132,10 +132,11 @@ public class PlayerController : PlayerService <PlayerController>
     {
         CurrentPlayerState();
         PlayerInputHandler.Instance.ReadInput();
+      
         Debug.Log(getLocomotionState().ToString());
         
     }
-    
+
     public PlayerLocomotionState getLocomotionState()
     {
         if(Isgrounded())

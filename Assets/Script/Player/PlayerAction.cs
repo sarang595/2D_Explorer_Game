@@ -19,6 +19,7 @@ public class PlayerAction : MonoBehaviour
     private PlayerAnimation playeranimation;
     private Coroutine swordCoroutine;
     bool Jumped =false;
+    public float jumpAttackForwardForce = 10f;
 
     private void Start()
     {
@@ -193,34 +194,23 @@ public class PlayerAction : MonoBehaviour
 
 
     }
-  
+
+
 
     public void JumpAttack()
     {
+        horizontalInput = PlayerInputHandler.Instance.Horizontal();
         bool isJumpAttack = playeranimation.FlyAttack();
 
         if (isJumpAttack && swordCoroutine == null)
         {
-            swordCoroutine = StartCoroutine(EnableSwordAfterDelay(0.48f));
+            FlySwordAttackOn();
         }
+        
         else if (!isJumpAttack)
         {
-            if (swordCoroutine != null)
-            {
-                StopCoroutine(swordCoroutine);
-                swordCoroutine = null;
-            }
             FlySwordAttackOff();
         }
     }
-
-    private IEnumerator EnableSwordAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-     
-        FlySwordAttackOn();
-        swordCoroutine = null;
-    }
-
-    public float GetVerticalVelocity() => rb.linearVelocity.y;
+  public float GetVerticalVelocity() => rb.linearVelocity.y;
 }
