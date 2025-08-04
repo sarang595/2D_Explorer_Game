@@ -36,6 +36,7 @@ public class EnemyControl : MonoBehaviour
     Vector2 toPlayer;
     bool isChase = false;
     float Attackcount = 0;
+    int Projectiledamage = 1;
 
     public enum EnemyMode { Patrol, Survilance }
     [SerializeField] public EnemyMode enemyMode = EnemyMode.Patrol; // Only this will show in inspector
@@ -58,6 +59,12 @@ public class EnemyControl : MonoBehaviour
     }
     private void PatrolCheck()
     {
+        bool PlayerDead = PlayerController.Instance.PlayerDead();
+       if (PlayerDead)
+        {
+            idle();
+            return;
+        }
         // Allowing enemy to patrol if enemy Canpatrol is true and not inside the boundary
         if (enemyMode == EnemyMode.Patrol && CanPatrol)
         {
@@ -67,6 +74,7 @@ public class EnemyControl : MonoBehaviour
         {
             survilance();
         }
+    
 
     }
     Vector3 getDirection()
@@ -121,7 +129,13 @@ public class EnemyControl : MonoBehaviour
             TurnEnemytoPlayer();
         }
     }
+    void idle()
+    {
+        EnemyAimation.SetBool("IsSplitterAttack", false);
+        EnemyAimation.SetBool("isSplitterAttackDown", false);
+        EnemyAimation.SetBool("IsSplitterIdle", true);
 
+    }
     private void Patroll()
     {
         //Moves enemy between PosA and PosB 
@@ -321,6 +335,8 @@ public class EnemyControl : MonoBehaviour
     }
     private async Awaitable PlayerenteredBoundary()
     {
+        if (PlayerController.Instance.PlayerDead())
+            return;
         //Stores the Player and checks whether the player is inside the declared boundary
 
         if (this.Player == null)
@@ -335,7 +351,7 @@ public class EnemyControl : MonoBehaviour
                 return;
             }
         }
-        Debug.Log("FirstPhase");
+        //Debug.Log("FirstPhase");
 
         // calculating the distance between enemy position and player position
         toPlayer = (Player.position - transform.position).normalized;
@@ -353,13 +369,13 @@ public class EnemyControl : MonoBehaviour
         //Debug.Log("angleToPlayer" + angleToPlayer);
         bool playerinFOV = distanceToPlayer <= FovRadius && Mathf.Abs(angleToPlayer) <= FovAngle / 2f;
         bool ChaseRange = (distanceToPlayer <= PatrolDistance);
-        Debug.Log(distanceToPlayer);
+       // Debug.Log(distanceToPlayer);
         if (playerinFOV && !isChase)
         {
             isChase = true;
             IsPlayerEntered = true;
             CanPatrol = false;
-            Debug.Log("Player Inside Boundary");
+            //Debug.Log("Player Inside Boundary");
 
             TurnEnemytoPlayer();
 
@@ -422,7 +438,7 @@ public class EnemyControl : MonoBehaviour
             EnemyAimation.SetBool("IsSplitterAttack", true);
             await Awaitable.WaitForSecondsAsync(1f);
             ProjectileBehaviour projectile = Instantiate(Projectile, ProjectilePos.position, ProjectilePos.rotation).GetComponent<ProjectileBehaviour>();
-            projectile.InitializeProjectile(Player, Projectileforce);
+            projectile.InitializeProjectile(Player, Projectileforce, Projectiledamage);
             await Awaitable.WaitForSecondsAsync(0.5f);
             EnemyAimation.SetBool("IsSplitterAttack", false);
             EnemyAimation.SetBool("isSplitterAttackDown", true);

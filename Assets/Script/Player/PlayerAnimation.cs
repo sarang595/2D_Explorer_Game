@@ -6,8 +6,10 @@ public class PlayerAnimation : MonoBehaviour
     private Animator PlayerAnimator;
     private PlayerAction PlayerAction;
     private bool flyAttack = false;
+    bool push = false;
     bool PushPower;
     private Coroutine airAttackCoroutine;
+
 
     private void Start()
     {
@@ -19,7 +21,7 @@ public class PlayerAnimation : MonoBehaviour
     {
         RunAnim();
         JumpAnim();
-        PushAnim();
+        PushCheck();
     }
 
     public void RunAnim()
@@ -32,13 +34,15 @@ public class PlayerAnimation : MonoBehaviour
 
     public void JumpAnim()
     {
+
         float currentJumpVelocity = PlayerAction.GetVerticalVelocity();
         bool inAir = PlayerController.Instance.PlayerinAir();
         bool grounded = PlayerController.Instance.PlayerGrounded();
         bool attacking = PlayerController.Instance.PlayerAttacking();
+        bool Pushing = PlayerInputHandler.Instance.Pushing();
 
-       
-        if (!flyAttack)
+
+        if (!flyAttack && !push)
         {
             PlayerAnimator.SetBool("IsJump", inAir);
 
@@ -55,7 +59,7 @@ public class PlayerAnimation : MonoBehaviour
         }
 
         // Handle in-air attack: interrupts jump/fall anims immediately, prevents overlap
-        if (attacking && inAir && !flyAttack)
+        if (attacking && inAir && !flyAttack && !push)
         {
             // Cancel jump/fall anims
             PlayerAnimator.SetBool("JumpUP", false);
@@ -68,11 +72,11 @@ public class PlayerAnimation : MonoBehaviour
 
     private IEnumerator PlayerAirAttack()
     {
-       
+
         flyAttack = true;
         PlayerAnimator.SetBool("Isattack", true);
 
-        // Keep attack anim for only a short duration for “real-time” response
+        // Keep attack anim for only a short duration for "real-time" response
         yield return new WaitForSeconds(0.5f);
 
         PlayerAnimator.SetBool("Isattack", false);
@@ -92,45 +96,81 @@ public class PlayerAnimation : MonoBehaviour
         bool canCrouch = PlayerController.Instance.CanCrouch();
         PlayerAnimator.SetBool("IsCrouch", canCrouch);
         if (canCrouch)
-        PlayerAnimator.SetFloat("MoveSpeed", 0);
+            PlayerAnimator.SetFloat("MoveSpeed", 0);
+    }
+
+    void PushCheck()
+    {
+        // Check if we should be pushing
+        bool shouldPush = PlayerController.Instance.CanPushPower();
+        bool pushPressed = PlayerInputHandler.Instance.Pushing();
+
+        // We can only push if BOTH conditions are true: ability to push AND button is pressed
+        bool canActuallyPush = shouldPush && pushPressed;
+
+        if (canActuallyPush && !push)
+        {
+            // Start pushing
+            PushAnim();
+        }
+        else if (!canActuallyPush && push)
+        {
+            // Stop pushing - clear all push states
+            // This covers: (!shouldPush OR !pushPressed) AND currently pushing
+            EndPushAnim();
+        }
+        else if (push && canActuallyPush)
+        {
+            // Continue pushing animation only if we still can and should
+            PushAnim();
+        }
     }
 
     public void PushAnim()
     {
-       
-        PushPower = PlayerController.Instance.CanPushPower();
-        if (PushPower)
+        push = true;
+        bool grounded = PlayerController.Instance.PlayerGrounded();
+        bool canPushPower = PlayerController.Instance.CanPushPower();
+
+        if (canPushPower)
         {
             float horizontalValue = PlayerInputHandler.Instance.Horizontal();
-            bool CanPush = PlayerController.Instance.CanPush();
+            bool canPush = PlayerController.Instance.CanPush();
 
-            // Set IsPush based on PushPower
-            PlayerAnimator.SetBool("IsPush", CanPush);
+            // Set IsPush based on ability to push
+            PlayerAnimator.SetBool("IsPush", canPush);
 
             // Only set IsPushMove if we can push AND there's horizontal input
-            if (CanPush && Mathf.Abs(horizontalValue) >= 0.2f)
+            if (canPush && Mathf.Abs(horizontalValue) >= 0.2f)
             {
                 PlayerAnimator.SetBool("IsPush", false);
-
                 PlayerAnimator.SetBool("IsPushMove", true);
-
             }
             else
             {
                 PlayerAnimator.SetBool("IsPushMove", false);
-
             }
-            PushPower = false;
         }
-       
-         else
-        {
-            PlayerAnimator.SetBool("IsPushMove", false);
+    }
 
-        }
+    private void EndPushAnim()
+    {
+        // Clear all push-related animation states
+        PlayerAnimator.SetBool("IsPush", false);
+        PlayerAnimator.SetBool("IsPushMove", false);
+        push = false;
+
+        Debug.Log("Push animation ended - jump should now work"); // Debug line
+    }
+
+    public void DeadAnim()
+    {
+        bool Dead = PlayerController.Instance.PlayerDead();
+
+        PlayerAnimator.SetBool("IsDead", true);
     }
 
     public bool FlyAttack() => flyAttack;
 
-   
+    public bool Ispushing() => push;
 }

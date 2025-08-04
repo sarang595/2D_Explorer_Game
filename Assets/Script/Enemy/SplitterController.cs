@@ -208,7 +208,7 @@ public class SplitterController : MonoBehaviour
         if (attackTimer <= 0f)
         {
             ProjectileBehaviour projectile = Instantiate(Projectile, ProjectilePos.position, ProjectilePos.rotation).GetComponent<ProjectileBehaviour>();
-            projectile.InitializeProjectile(Player, Projectileforce);
+            projectile.InitializeProjectile(Player, Projectileforce,1);
             //Rigidbody2D projRb = SpawnProjectile.GetComponent<Rigidbody2D>();
             // Calculate direction from projectile spawn to player
             //Vector2 direction = (Player.position - ProjectilePos.position).normalized;

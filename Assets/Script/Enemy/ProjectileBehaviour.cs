@@ -88,13 +88,15 @@ public class ProjectileBehaviour : MonoBehaviour
     private float journeyTime = 0f;
     private float journeyLength;
     private float dynamicArcHeight;
+    float distance;
+    int damage;
 
     void Start()
     {
         startPos = transform.position;
 
         // Calculate distance and dynamic arc height
-        float distance = Vector3.Distance(startPos, target.position);
+         distance = Vector3.Distance(startPos, target.position);
         dynamicArcHeight = CalculateDynamicArcHeight(distance);
 
         // Create control point for arc using dynamic height
@@ -132,10 +134,29 @@ public class ProjectileBehaviour : MonoBehaviour
         return Mathf.Lerp(minArcHeight, maxArcHeight, normalizedDistance);
     }
 
-    public void InitializeProjectile(Transform target, float ProjectileSpeed)
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            // Get the PlayerController on the collided object
+            PlayerController player = collision.GetComponent<PlayerController>();
+            if (player != null)
+            {
+               player.HealthDamage(damage); // Apply damage to player
+            }
+
+            Destroy(gameObject); // Optionally destroy the projectile after hitting
+        }
+    }
+
+
+    public void InitializeProjectile(Transform target, float ProjectileSpeed, int damage)
     {
         this.target = target;
         this.ProjectileSpeed = ProjectileSpeed;
+        this.damage = damage;
 
         // Recalculate arc height if target changes
         if (target != null)

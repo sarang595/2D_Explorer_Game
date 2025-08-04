@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -21,9 +22,10 @@ public class PlayerController : PlayerService <PlayerController>
     [SerializeField] float GroundRadius;
 
    [Header("Player Components")]
-   [SerializeField] public float PlayerHealth;
+   [SerializeField] public int PlayerHealth;
    [SerializeField] public float PlayerSpeed;
    [SerializeField] public float JumpVelocity;
+
 
     [Header("Spawn Settings")]
     [SerializeField] private bool shouldSpawnOnStart = true;
@@ -132,7 +134,7 @@ public class PlayerController : PlayerService <PlayerController>
     {
         CurrentPlayerState();
         PlayerInputHandler.Instance.ReadInput();
-      
+        Debug.Log(getPlayerState());
         Debug.Log(getLocomotionState().ToString());
         
     }
@@ -198,7 +200,15 @@ public class PlayerController : PlayerService <PlayerController>
     public bool Crouching() => playerAlive && playerCrouching;
 
     public bool CanPush() => playerAlive && playerGrounded && playerpushing;
-
+    public bool CanFlip() => playerAlive && playerGrounded;
+    public bool PlayerDead() => playerDead;
+    public int HealthDamage(int damage)
+    {
+        PlayerHealth -= damage;
+        if (PlayerHealth < 0) PlayerHealth = 0;
+        Debug.Log("Player health is now: " + PlayerHealth);  // <-- Add this line
+        return PlayerHealth;
+    }
 
     public bool Isgrounded()
     {
@@ -212,11 +222,12 @@ public class PlayerController : PlayerService <PlayerController>
         }
         else if(PlayerHealth<=0)
         {
+            
             live = false;
         }
         return live;
     }
-
+   
    
     private void OnDrawGizmos()
     {
@@ -249,4 +260,5 @@ public class PlayerController : PlayerService <PlayerController>
         }
     }
     public bool CanPushPower() => PushPower;
+   
 }

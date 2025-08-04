@@ -38,7 +38,7 @@ public class PlayerAction : MonoBehaviour
         SwordAttack();
         Crouch();
         Jump();
-
+        Dead();
         // Debug.Log(rb.linearVelocity.y);
 
     }
@@ -52,6 +52,7 @@ public class PlayerAction : MonoBehaviour
     public void Run()
     {
         bool CanRun = PlayerController.Instance.CanRun() && !PlayerController.Instance.Crouching();
+        bool CanFlip = PlayerController.Instance.CanFlip();
         horizontalInput = PlayerInputHandler.Instance.Horizontal();
         // Handles Player Movement Logic
         if (CanRun && Mathf.Abs(horizontalInput) > 0.01f)
@@ -67,23 +68,26 @@ public class PlayerAction : MonoBehaviour
             // Reset horizontal velocity only (not vertical)
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
         }
-
-        Flip();
+        if(CanFlip)
+        {
+            Flip();
+        }
+       
     }
   public void Jump()
     {
         // Handles Player Jump Logic
-        
-       
+        Flip();
         bool CanJump = PlayerController.Instance.CanJump();
         float jumpVelocity = PlayerController.Instance.JumpVelocity;
         bool canJump = CanJump && PlayerController.Instance.getLocomotionState() == PlayerController.PlayerLocomotionState.Grounded &&!isAttacking;
         //bool Canjump() => Isjumping();
-        if (canJump)
+        if (canJump && playeranimation.Ispushing() == false)
         {
            
             rb.AddForce(Vector2.up * jumpVelocity, ForceMode2D.Impulse);
             Jumped = true;
+          
 
         }
        
@@ -204,7 +208,8 @@ public class PlayerAction : MonoBehaviour
 
         if (isJumpAttack && swordCoroutine == null)
         {
-            FlySwordAttackOn();
+           
+            StartCoroutine(flySword(0.07f));
         }
         
         else if (!isJumpAttack)
@@ -212,5 +217,18 @@ public class PlayerAction : MonoBehaviour
             FlySwordAttackOff();
         }
     }
+  private IEnumerator flySword(float delay)
+    {
+        yield return new WaitForSeconds (delay);
+        FlySwordAttackOn();
+    }
   public float GetVerticalVelocity() => rb.linearVelocity.y;
+    private void Dead()
+    {
+        int CurrentHealth = PlayerController.Instance.PlayerHealth;
+        if (CurrentHealth<= 0) 
+        { 
+            playeranimation.DeadAnim(); 
+        }
+    }
 }
