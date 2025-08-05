@@ -26,7 +26,7 @@ public class PlayerAnimation : MonoBehaviour
 
     public void RunAnim()
     {
-        bool canRun = PlayerController.Instance.CanRun() && !PlayerController.Instance.Crouching();
+        bool canRun = PlayerController.Instance.CanRun() && !PlayerController.Instance.CanDrift();
         float horizontalValue = PlayerInputHandler.Instance.Horizontal();
 
         PlayerAnimator.SetFloat("MoveSpeed", canRun ? Mathf.Abs(horizontalValue) : 0f);
@@ -91,11 +91,11 @@ public class PlayerAnimation : MonoBehaviour
         PlayerAnimator.SetBool("Isattack", canAttack);
     }
 
-    public void CrouchAnim()
+    public void DriftAnim()
     {
-        bool canCrouch = PlayerController.Instance.CanCrouch();
-        PlayerAnimator.SetBool("IsCrouch", canCrouch);
-        if (canCrouch)
+        bool CanDrift = PlayerController.Instance.CanDrift();
+        PlayerAnimator.SetBool("IsDrift", CanDrift);
+        if (CanDrift)
             PlayerAnimator.SetFloat("MoveSpeed", 0);
     }
 

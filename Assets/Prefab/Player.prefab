@@ -179,9 +179,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   GroundRadius: 0.5
-  PlayerHealth: 10
+  PlayerHealth: 5
   PlayerSpeed: 7
   JumpVelocity: 22.5
+  DriftSpeed: 15
   shouldSpawnOnStart: 1
   defaultSpawnPosition: {x: 0, y: 0, z: 0}
   locomotionState: 0
@@ -201,6 +202,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sword: {fileID: 5783164131759137043}
   flysword: {fileID: 9171049755823359860}
+  jumpAttackForwardForce: 10
 --- !u!95 &3296927085896659894
 Animator:
   serializedVersion: 7
@@ -396,7 +398,7 @@ Transform:
   m_GameObject: {fileID: 7101675465846317492}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.0103683, y: 3.1799998, z: -10}
+  m_LocalPosition: {x: 1.0103703, y: 3.1799994, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -543,7 +545,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.4081416, y: -0.04722327}
+  m_Offset: {x: 0.30924606, y: -0.04722327}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -553,7 +555,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.8162832, y: 0.6536945}
+  m_Size: {x: 1.6184921, y: 0.6536945}
   m_EdgeRadius: 0
 --- !u!114 &8854474252750169946
 MonoBehaviour:

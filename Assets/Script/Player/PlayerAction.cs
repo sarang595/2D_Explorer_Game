@@ -12,10 +12,10 @@ public class PlayerAction : MonoBehaviour
     BoxCollider2D swordcollider;
     float horizontalInput;
     bool isfacingRight = true;
-    bool iscrouched = false;
+    bool isdrift = false;
     bool isAttacking = false;
-    Vector2 currentcrouchcollidersize;
-    Vector2 currentcrouchcollideroffset;
+    Vector2 currentdriftcollidersize;
+    Vector2 currentdriftcollideroffset;
     private PlayerAnimation playeranimation;
     private Coroutine swordCoroutine;
     bool Jumped =false;
@@ -27,7 +27,7 @@ public class PlayerAction : MonoBehaviour
         playeranimation = GetComponent<PlayerAnimation>();
         playerCollider = GetComponent<CapsuleCollider2D>();
         swordcollider = sword.GetComponent<BoxCollider2D>();
-        originalcrouchcollidersize();
+        originaldriftcollidersize();
         GroundedSwordAttackOff();
     }
 
@@ -36,7 +36,7 @@ public class PlayerAction : MonoBehaviour
 
         JumpAttack();
         SwordAttack();
-        Crouch();
+        Drift();
         Jump();
         Dead();
         // Debug.Log(rb.linearVelocity.y);
@@ -49,11 +49,33 @@ public class PlayerAction : MonoBehaviour
 
     }
 
+    //public void Run()
+    //{
+    //    bool CanRun = PlayerController.Instance.CanRun() && !PlayerController.Instance.Crouching();
+    //    horizontalInput = PlayerInputHandler.Instance.Horizontal();
+    //    // Handles Player Movement Logic
+    //    if (CanRun && Mathf.Abs(horizontalInput) > 0.01f)
+    //    {
+    //        float moveSpeed = PlayerController.Instance.PlayerSpeed;
+    //        rb.linearVelocity = new Vector2(horizontalInput * moveSpeed, rb.linearVelocity.y);
+
+    //        if (playeranimation != null)
+    //            playeranimation.RunAnim();
+    //    }
+    //    else
+    //    {
+    //        // Reset horizontal velocity only (not vertical)
+    //        rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+    //    }
+      
+    //    Flip();
+
+    //}
     public void Run()
     {
-        bool CanRun = PlayerController.Instance.CanRun() && !PlayerController.Instance.Crouching();
-        bool CanFlip = PlayerController.Instance.CanFlip();
+        bool CanRun = PlayerController.Instance.CanRun() && !PlayerController.Instance.CanDrift();
         horizontalInput = PlayerInputHandler.Instance.Horizontal();
+
         // Handles Player Movement Logic
         if (CanRun && Mathf.Abs(horizontalInput) > 0.01f)
         {
@@ -63,18 +85,16 @@ public class PlayerAction : MonoBehaviour
             if (playeranimation != null)
                 playeranimation.RunAnim();
         }
-        else
+        else if (!isdrift) // Only reset velocity if not crouching
         {
             // Reset horizontal velocity only (not vertical)
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
         }
-        if(CanFlip)
-        {
-            Flip();
-        }
-       
+
+        Flip();
     }
-  public void Jump()
+
+    public void Jump()
     {
         // Handles Player Jump Logic
         Flip();
@@ -95,63 +115,74 @@ public class PlayerAction : MonoBehaviour
     }
   public void Flip()
     {
-        // Handles Player flip
-        Vector3 scale = transform.localScale;
-        bool flipRight = horizontalInput > 0 && !isfacingRight;
-        bool flipLeft = horizontalInput < 0 && isfacingRight;
-        if (flipRight)
+        bool CanFlip = PlayerController.Instance.CanFlip();
+        if (CanFlip)
         {
-            scale.x = Mathf.Abs(scale.x); 
-            transform.localScale = scale;
-            isfacingRight = true ;
+
+            // Handles Player flip
+            Vector3 scale = transform.localScale;
+            bool flipRight = horizontalInput > 0 && !isfacingRight;
+            bool flipLeft = horizontalInput < 0 && isfacingRight;
+            if (flipRight)
+            {
+                scale.x = Mathf.Abs(scale.x);
+                transform.localScale = scale;
+                isfacingRight = true;
+            }
+            else if (flipLeft)
+            {
+                scale.x = -Mathf.Abs(scale.x);
+                transform.localScale = scale;
+                isfacingRight = false;
+            }
         }
-        else if (flipLeft)
-        {
-            scale.x = -Mathf.Abs(scale.x); 
-            transform.localScale = scale;
-            isfacingRight = false ;
-        }
+        else return;
+       
     }
-    private void originalcrouchcollidersize()
+    private void originaldriftcollidersize()
     {
-        currentcrouchcollidersize = playerCollider.size;
-        currentcrouchcollideroffset = playerCollider.offset;
+        currentdriftcollidersize = playerCollider.size;
+        currentdriftcollideroffset = playerCollider.offset;
     }
 
 
-    public void Crouch()
+    public void Drift()
     {
-        
-        bool CanCrouch= PlayerController.Instance.CanCrouch();
-        bool CrouchUp = PlayerController.Instance.CrouchUp();
-        playeranimation.CrouchAnim();
-        if (CanCrouch && !iscrouched)
+        float driftSpeed = PlayerController.Instance.DriftSpeed;
+       // Vector2 velocity = isfacingRight ? new Vector2(driftSpeed, rb.linearVelocity.y) : new Vector2(-driftSpeed, rb.linearVelocity.y);
+        bool CanDrift = PlayerController.Instance.CanDrift();
+        bool DriftUp = PlayerController.Instance.DriftUp();
+        playeranimation.DriftAnim();
+        if (CanDrift && !isdrift)
         {
+            currentdriftcollideroffset.y = playerCollider.offset.y / 1.5f;
+            currentdriftcollidersize.y = playerCollider.size.y / 1.5f;
+            playerCollider.size = currentdriftcollidersize;
+            playerCollider.offset = currentdriftcollideroffset;
+           // rb.linearVelocity = velocity;
 
-            currentcrouchcollideroffset.y = playerCollider.offset.y / 1.5f;
-            currentcrouchcollidersize.y = playerCollider.size.y / 1.5f;
-            playerCollider.size = currentcrouchcollidersize;
-            playerCollider.offset = currentcrouchcollideroffset;
-            iscrouched = true;
+            isdrift = true;
 
         }
-        else if (iscrouched && CrouchUp)
+        if (isdrift && CanDrift)
+        {
+            Vector2 velocity = isfacingRight ? new Vector2(driftSpeed, rb.linearVelocity.y) : new Vector2(-driftSpeed, rb.linearVelocity.y);
+            rb.linearVelocity = velocity;
+        }
+        else if (isdrift && DriftUp)
         {
             {
-
-
-                currentcrouchcollideroffset.y = playerCollider.offset.y * 1.5f;
-                currentcrouchcollidersize.y = playerCollider.size.y * 1.5f;
-                playerCollider.size = currentcrouchcollidersize;
-                playerCollider.offset = currentcrouchcollideroffset;
-                iscrouched = false;
+                currentdriftcollideroffset.y = playerCollider.offset.y * 1.5f;
+                currentdriftcollidersize.y = playerCollider.size.y * 1.5f;
+                playerCollider.size = currentdriftcollidersize;
+                playerCollider.offset = currentdriftcollideroffset;
+                isdrift = false;
                 
-
 
             }
             // Update animation based on current crouch state
             if (playeranimation != null)
-                playeranimation.CrouchAnim();
+                playeranimation.DriftAnim();
         }
 
     }

@@ -14,7 +14,7 @@ public class PlayerController : PlayerService <PlayerController>
     public enum PlayerLocomotionState { Grounded, InAir}
 
     //Represents player action
-    public enum PlayerActionstate { idle,run,crouch,jump,attack,push,death }
+    public enum PlayerActionstate { idle,run,drift,jump,attack,push,death }
 
     [Header("Player Locomotion checker")]
     [SerializeField] Transform GroundChecker;
@@ -25,6 +25,7 @@ public class PlayerController : PlayerService <PlayerController>
    [SerializeField] public int PlayerHealth;
    [SerializeField] public float PlayerSpeed;
    [SerializeField] public float JumpVelocity;
+   [SerializeField] public float DriftSpeed;
 
 
     [Header("Spawn Settings")]
@@ -40,7 +41,7 @@ public class PlayerController : PlayerService <PlayerController>
     private bool playerAlive;
     private bool playerGrounded;
     private bool playerAttacking;
-    private bool playerCrouching;
+    private bool playerDrifting;
     private bool playerRunning;
     private bool playerIdle;
     private bool playerInAir;
@@ -49,6 +50,7 @@ public class PlayerController : PlayerService <PlayerController>
     private bool landingFrame;
     private bool wasGrounded; // Track previous frame's grounded state
     private bool PushPower=false;
+    bool isDamage = false;
    
     private void Awake()
     {
@@ -176,19 +178,19 @@ public class PlayerController : PlayerService <PlayerController>
         playerRunning = Mathf.Abs(PlayerInputHandler.Instance.Horizontal()) > 0.01f;
         playerAttacking = PlayerInputHandler.Instance.Attacking();
         playerJumping = PlayerInputHandler.Instance.Jump();
-        playerCrouching = PlayerInputHandler.Instance.Crouching();
+        playerDrifting = PlayerInputHandler.Instance.Drifting();
         playerpushing = PlayerInputHandler.Instance.Pushing();
        
     }
     // Player State Conditions
-    public bool CanRun() => playerAlive && playerRunning && !playerCrouching;
-    public bool CanAttack() => playerAlive && playerAttacking && !playerCrouching;
+    public bool CanRun() => playerAlive && playerRunning && !playerDrifting;
+    public bool CanAttack() => playerAlive && playerAttacking && !playerDrifting;
 
     public bool CanJump() => playerAlive && playerGrounded && playerJumping;
 
-    public bool CanCrouch() => playerAlive && playerGrounded&& playerCrouching;
+    public bool CanDrift() => playerAlive && playerGrounded && playerDrifting && !playerpushing;
      
-    public bool CrouchUp() => playerAlive && playerGrounded && !playerCrouching;
+    public bool DriftUp() => playerAlive && playerGrounded && !playerDrifting;
 
     public bool PlayerinAir() => playerAlive && playerInAir;
     public bool JumpAttack() => playerAlive && playerAttacking && playerInAir;
@@ -197,17 +199,26 @@ public class PlayerController : PlayerService <PlayerController>
     public bool PlayerGrounded() => playerGrounded;
 
     public bool Jumping() => playerAlive && playerJumping;
-    public bool Crouching() => playerAlive && playerCrouching;
+   
 
     public bool CanPush() => playerAlive && playerGrounded && playerpushing;
-    public bool CanFlip() => playerAlive && playerGrounded;
+    public bool CanFlip() => playerAlive && !playerDrifting;
     public bool PlayerDead() => playerDead;
+
+ 
     public int HealthDamage(int damage)
     {
+        isDamage = true;
         PlayerHealth -= damage;
         if (PlayerHealth < 0) PlayerHealth = 0;
         Debug.Log("Player health is now: " + PlayerHealth);  // <-- Add this line
+        DamageReset(0.1f);
         return PlayerHealth;
+    }
+    IEnumerator DamageReset(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        isDamage = false;
     }
 
     public bool Isgrounded()
@@ -260,5 +271,6 @@ public class PlayerController : PlayerService <PlayerController>
         }
     }
     public bool CanPushPower() => PushPower;
+    public bool Damage() => isDamage;
    
 }

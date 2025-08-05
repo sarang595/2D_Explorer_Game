@@ -431,24 +431,34 @@ public class EnemyControl : MonoBehaviour
     }
     private async Awaitable Attack()
     {
-        /*Projectile initiated from ProjectileBehaviour after 1f sec of attack animation set to true
-        /and animation diabled after 0.5f of projectile initialization*/
-    
-        
-            EnemyAimation.SetBool("IsSplitterAttack", true);
-            await Awaitable.WaitForSecondsAsync(1f);
-            ProjectileBehaviour projectile = Instantiate(Projectile, ProjectilePos.position, ProjectilePos.rotation).GetComponent<ProjectileBehaviour>();
-            projectile.InitializeProjectile(Player, Projectileforce, Projectiledamage);
-            await Awaitable.WaitForSecondsAsync(0.5f);
-            EnemyAimation.SetBool("IsSplitterAttack", false);
-            EnemyAimation.SetBool("isSplitterAttackDown", true);
-            EnemyAimation.SetBool("IsSplitterWalk", false);
-            attackTimer = attackCooldown;
-            Attackcount++;
+        if (EnemyAimation == null)
+            return;
 
-        
-   
-       
+        EnemyAimation.SetBool("IsSplitterAttack", true);
+
+        await Awaitable.WaitForSecondsAsync(1f);
+
+        if (EnemyAimation == null)
+            return;
+
+        ProjectileBehaviour projectile = Instantiate(Projectile, ProjectilePos.position, ProjectilePos.rotation)?.GetComponent<ProjectileBehaviour>();
+        if (projectile != null)
+        {
+            projectile.InitializeProjectile(Player, Projectileforce, Projectiledamage);
+        }
+
+        await Awaitable.WaitForSecondsAsync(0.5f);
+
+        if (EnemyAimation == null)
+            return;
+
+        EnemyAimation.SetBool("IsSplitterAttack", false);
+        EnemyAimation.SetBool("isSplitterAttackDown", true);
+        EnemyAimation.SetBool("IsSplitterWalk", false);
+
+        attackTimer = attackCooldown;
+        Attackcount++;
     }
+
 
 }

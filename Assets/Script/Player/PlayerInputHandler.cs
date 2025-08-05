@@ -5,8 +5,9 @@ public class PlayerInputHandler : PlayerService<PlayerInputHandler>
     
     float horizontal;
     bool jump;
-    bool crouching;
+    bool drifting;
     bool push;
+    bool drift;
     bool attacking;
     int RightMouseClick = 1;
 
@@ -15,13 +16,15 @@ public class PlayerInputHandler : PlayerService<PlayerInputHandler>
     {
         horizontal = Input.GetAxis("Horizontal"); //Handles Run
         jump = Input.GetKeyDown(KeyCode.Space); //Handles Jump
-        crouching = Input.GetKey(KeyCode.LeftControl); //Handles Crouch
+        drifting = Input.GetKey(KeyCode.LeftControl); //Handles Crouch
         attacking = Input.GetMouseButtonUp(RightMouseClick); //Right MouseClick Handles SwordAttack
         push = Input.GetKey(KeyCode.E);
+     
     }
     public float Horizontal() => horizontal;
     public bool Jump() => jump;
-    public bool Crouching() => crouching;
+    public bool Drifting() => drifting;
     public bool Attacking() => attacking;
     public bool Pushing() => push;
+ 
 }
