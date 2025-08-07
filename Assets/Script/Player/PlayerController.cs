@@ -22,7 +22,7 @@ public class PlayerController : PlayerService <PlayerController>
     [SerializeField] float GroundRadius;
 
    [Header("Player Components")]
-   [HideInInspector]
+
    public int CurrentPlayerHealth;
    [SerializeField] public float PlayerSpeed;
    [SerializeField] public float JumpVelocity;

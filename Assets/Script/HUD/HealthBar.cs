@@ -24,7 +24,8 @@ public class HealthBar : MonoBehaviour
 
     void Update()
     {
-        ReduceLife();     
+        ReduceLife();
+       
     }
     private void PlayerInitialization()
     {
@@ -41,7 +42,7 @@ public class HealthBar : MonoBehaviour
    
       
     }
-    void createHeart()
+    public void createHeart()
     {
         for (int i = 0; i < _maxHealth; i++)
         {
@@ -55,7 +56,7 @@ public class HealthBar : MonoBehaviour
 
     }
 
-    void ReduceLife()
+     void ReduceLife()
     {
         currentHealth = PlayerController.Instance.CurrentPlayerHealth;        
         bool IsDamage = PlayerController.Instance.Damage();
@@ -70,7 +71,51 @@ public class HealthBar : MonoBehaviour
             }
            
         }
-    
-  
-       
+    public void AllHeartLost()
+    {
+        int maxLife = _maxHealth; 
+        if (maxLife > 0)
+        {
+            //  Simple countdown
+            for (int i = maxLife; i >= 0; i--)
+            {
+            
+                int AllLostIndex = i;
+                if (AllLostIndex >= 0 && AllLostIndex <instantiatedHealthanim.Count && instantiatedHealthanim !=null)
+                {
+                    instantiatedHealthanim[AllLostIndex].SetBool("HealthDown", true);
+                }
+            }
+            currentHealth = 0;
+        }
+        else
+        {
+            Debug.Log("No hearts to lose!");
+            return;
+        }
+    }
+    public void RestoreAllHeart()
+    {
+        int maxLife = _maxHealth; // Use int instead of float
+        if (maxLife > 0)
+        {
+            //  Simple countdown
+            for (int i = maxLife; i >= 0; i--)
+            {
+
+                int AllLostIndex = i;
+                if (AllLostIndex >= 0 && AllLostIndex < instantiatedHealthanim.Count && instantiatedHealthanim != null)
+                {
+                    instantiatedHealthanim[AllLostIndex].SetBool("HealthDown", false);
+                }
+            }
+      
+        }
+        else
+        {
+            Debug.Log("No hearts to lose!");
+            return;
+        }
+    }
+
 }

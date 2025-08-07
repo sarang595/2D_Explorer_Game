@@ -180,9 +180,9 @@ MonoBehaviour:
     m_Bits: 64
   GroundRadius: 0.5
   CurrentPlayerHealth: 0
-  PlayerSpeed: 7
-  JumpVelocity: 22.5
-  DriftSpeed: 15
+  PlayerSpeed: 9.5
+  JumpVelocity: 21.5
+  DriftSpeed: 20
   JumpMoveSpeed: 10
   shouldSpawnOnStart: 1
   defaultSpawnPosition: {x: 0, y: 0, z: 0}

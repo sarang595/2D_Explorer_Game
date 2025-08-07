@@ -107,7 +107,7 @@ public class PlayerAction : MonoBehaviour
      
         bool CanJump = PlayerController.Instance.CanJump();
         float jumpVelocity = PlayerController.Instance.JumpVelocity;
-        bool canJump = CanJump && PlayerController.Instance.getLocomotionState() == PlayerController.PlayerLocomotionState.Grounded &&!isAttacking;
+        bool canJump = CanJump && PlayerController.Instance.PlayerGrounded()&&!isAttacking;
         //bool Canjump() => Isjumping();
        
         if (canJump && playeranimation.Ispushing() == false)
@@ -130,6 +130,7 @@ public class PlayerAction : MonoBehaviour
             Vector2 JumpMoveVelocity = isfacingRight ? Vector2.right * _JumpMoveSpeed : Vector2.left * _JumpMoveSpeed;
             rb.linearVelocity = new Vector2(JumpMoveVelocity.x, rb.linearVelocity.y);
         }
+        else return;
     }
 
     public void Flip()

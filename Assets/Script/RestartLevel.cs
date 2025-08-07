@@ -4,19 +4,40 @@ using UnityEngine.SceneManagement;
 public class RestartLevel : MonoBehaviour
 {
    
-    private void OnTriggerEnter2D(Collider2D collision)
+ private async void OnTriggerEnter2D(Collider2D collision)
+{
+    if (collision.gameObject.CompareTag("Player"))
     {
-        if (collision.gameObject.CompareTag("Player"))
+        int _maxDamage = UIManager.Instance.MaxHealth;
+        PlayerController player = collision.GetComponent<PlayerController>();
+        if (player != null)
         {
-           
-            ReloadScene();
-
+             HealthBar healthBar = FindAnyObjectByType<HealthBar>();
+            if (healthBar != null)
+            {
+                player.HealthDamage(_maxDamage);
+                healthBar.AllHeartLost();
+                await ReloadScene();
+            }
+            else
+            {
+                Debug.LogError("HealthBar not found in scene!");
+            }
+            
         }
     }
-    private void ReloadScene()
+}
+    private async Awaitable ReloadScene()
     {
-        int CurrentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        await Awaitable.WaitForSecondsAsync(0.5f);
+        HealthBar healthBar = FindAnyObjectByType<HealthBar>();
+        if (healthBar != null)
+        {
+            healthBar.RestoreAllHeart();
+            int CurrentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(CurrentSceneIndex);
+
+        }
        
-        SceneManager.LoadScene(CurrentSceneIndex);
     }
 }

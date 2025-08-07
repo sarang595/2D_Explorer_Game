@@ -368,7 +368,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3358648283844422232, guid: 47b583b07357c0442871ce09036632fa, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5579600025413988884, guid: 47b583b07357c0442871ce09036632fa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -14071,7 +14071,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3358648283844422232, guid: 47b583b07357c0442871ce09036632fa, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6133385287339974000, guid: 47b583b07357c0442871ce09036632fa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -14385,10 +14385,6 @@ PrefabInstance:
     - target: {fileID: 1724865230856189207, guid: 5ed5020c529618648aeeefdc8a2fd7a3, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 2509631205917638665, guid: 5ed5020c529618648aeeefdc8a2fd7a3, type: 3}
-      propertyPath: DriftSpeed
-      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6271019462199056246, guid: 5ed5020c529618648aeeefdc8a2fd7a3, type: 3}
       propertyPath: m_LocalPosition.x
