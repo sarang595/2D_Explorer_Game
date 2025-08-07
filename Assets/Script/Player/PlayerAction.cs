@@ -39,7 +39,7 @@ public class PlayerAction : MonoBehaviour
 
     private void Update()
     {
-
+       
         JumpAttack();
         SwordAttack();
         DriftCheck();
@@ -52,7 +52,7 @@ public class PlayerAction : MonoBehaviour
     {
        Run();
        StaminaControl();
-
+       JumpMove();
     }
 
     //public void Run()
@@ -104,22 +104,35 @@ public class PlayerAction : MonoBehaviour
     {
         // Handles Player Jump Logic
         Flip();
+     
         bool CanJump = PlayerController.Instance.CanJump();
         float jumpVelocity = PlayerController.Instance.JumpVelocity;
         bool canJump = CanJump && PlayerController.Instance.getLocomotionState() == PlayerController.PlayerLocomotionState.Grounded &&!isAttacking;
         //bool Canjump() => Isjumping();
+       
         if (canJump && playeranimation.Ispushing() == false)
         {
            
             rb.AddForce(Vector2.up * jumpVelocity, ForceMode2D.Impulse);
             Jumped = true;
-          
-
         }
        
 
     }
-  public void Flip()
+    public void JumpMove()
+    {
+        bool isInAir = PlayerController.Instance.PlayerinAir();
+        float isMoved = Mathf.Abs(horizontalInput);
+
+        if (isInAir && Jumped && isMoved > 0.001f)
+        {
+            float _JumpMoveSpeed = PlayerController.Instance.JumpMoveSpeed;
+            Vector2 JumpMoveVelocity = isfacingRight ? Vector2.right * _JumpMoveSpeed : Vector2.left * _JumpMoveSpeed;
+            rb.linearVelocity = new Vector2(JumpMoveVelocity.x, rb.linearVelocity.y);
+        }
+    }
+
+    public void Flip()
     {
         bool CanFlip = PlayerController.Instance.CanFlip();
         if (CanFlip)

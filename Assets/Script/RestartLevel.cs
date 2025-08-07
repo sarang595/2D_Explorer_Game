@@ -8,6 +8,7 @@ public class RestartLevel : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+           
             ReloadScene();
 
         }

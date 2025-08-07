@@ -368,7 +368,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3358648283844422232, guid: 47b583b07357c0442871ce09036632fa, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5579600025413988884, guid: 47b583b07357c0442871ce09036632fa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -14071,7 +14071,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3358648283844422232, guid: 47b583b07357c0442871ce09036632fa, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6133385287339974000, guid: 47b583b07357c0442871ce09036632fa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -14387,20 +14387,8 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 2509631205917638665, guid: 5ed5020c529618648aeeefdc8a2fd7a3, type: 3}
-      propertyPath: Stamina
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2509631205917638665, guid: 5ed5020c529618648aeeefdc8a2fd7a3, type: 3}
       propertyPath: DriftSpeed
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 2509631205917638665, guid: 5ed5020c529618648aeeefdc8a2fd7a3, type: 3}
-      propertyPath: shouldSpawnOnStart
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4484944645774533676, guid: 5ed5020c529618648aeeefdc8a2fd7a3, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1.0103683
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6271019462199056246, guid: 5ed5020c529618648aeeefdc8a2fd7a3, type: 3}
       propertyPath: m_LocalPosition.x

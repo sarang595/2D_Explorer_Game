@@ -27,6 +27,7 @@ public class PlayerController : PlayerService <PlayerController>
    [SerializeField] public float PlayerSpeed;
    [SerializeField] public float JumpVelocity;
    [SerializeField] public float DriftSpeed;
+   [SerializeField] [Range (0f,10f)] public float JumpMoveSpeed;
 
 
 

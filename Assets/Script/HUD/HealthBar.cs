@@ -18,15 +18,13 @@ public class HealthBar : MonoBehaviour
     {
         PlayerInitialization();
         InitiateHealthBar();
-        createHeart();
-      
+        createHeart();   
     }
 
 
     void Update()
     {
-        ReduceLife();
-       
+        ReduceLife();     
     }
     private void PlayerInitialization()
     {
