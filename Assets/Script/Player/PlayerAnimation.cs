@@ -98,6 +98,10 @@ public class PlayerAnimation : MonoBehaviour
         if (CanDrift)
             PlayerAnimator.SetFloat("MoveSpeed", 0);
     }
+    public void DriftAnimOff()
+    {
+        PlayerAnimator.SetBool("IsDrift", false);
+    }
 
     void PushCheck()
     {

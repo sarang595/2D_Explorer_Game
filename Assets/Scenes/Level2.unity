@@ -1066,7 +1066,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 7
+  orthographic size: 6.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1091,7 +1091,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8.299627, y: 6.384102, z: -10}
+  m_LocalPosition: {x: 8.6003685, y: 6.4141016, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11377,7 +11377,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PatrollSpeed: 0.3
   Distance: 4
-  patrollboundary: {fileID: 1427220368}
   Target:
     serializedVersion: 2
     m_Bits: 8

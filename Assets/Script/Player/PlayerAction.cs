@@ -20,10 +20,16 @@ public class PlayerAction : MonoBehaviour
     private Coroutine swordCoroutine;
     bool Jumped =false;
     public float jumpAttackForwardForce = 10f;
+    public float driftTime;
+    bool CanDrift;
+    float StaminaLessRate = 0.005f;
+    float StaminaBurnRate = 2f;
 
     private void Start()
     {
+        CanDrift = true;
         rb = GetComponent<Rigidbody2D>();
+        driftTime = UIManager.Instance.Stamina;
         playeranimation = GetComponent<PlayerAnimation>();
         playerCollider = GetComponent<CapsuleCollider2D>();
         swordcollider = sword.GetComponent<BoxCollider2D>();
@@ -36,16 +42,16 @@ public class PlayerAction : MonoBehaviour
 
         JumpAttack();
         SwordAttack();
-        Drift();
+        DriftCheck();
         Jump();
         Dead();
-        // Debug.Log(rb.linearVelocity.y);
+      
 
     }
     private void FixedUpdate()
     {
        Run();
-
+       StaminaControl();
 
     }
 
@@ -145,7 +151,11 @@ public class PlayerAction : MonoBehaviour
         currentdriftcollideroffset = playerCollider.offset;
     }
 
-
+    void DriftCheck()
+    {
+        if (CanDrift) Drift();
+        else return;
+    }
     public void Drift()
     {
         float driftSpeed = PlayerController.Instance.DriftSpeed;
@@ -185,6 +195,37 @@ public class PlayerAction : MonoBehaviour
                 playeranimation.DriftAnim();
         }
 
+    }
+    private void ExitDrift()
+    {
+        // Reset collider to original size
+        currentdriftcollideroffset.y = playerCollider.offset.y * 1.5f;
+        currentdriftcollidersize.y = playerCollider.size.y * 1.5f;
+        playerCollider.size = currentdriftcollidersize;
+        playerCollider.offset = currentdriftcollideroffset;
+        playeranimation. DriftAnimOff();
+        isdrift = false;
+    }
+    void StaminaControl()
+    {
+
+        CanDrift = true;
+        driftTime -= Time.deltaTime * StaminaLessRate;
+        if (isdrift && driftTime > 0f)
+        {
+            driftTime -= Time.deltaTime * StaminaBurnRate;
+        }
+        if (driftTime < 0f)
+            driftTime = 0f;
+        if (driftTime == 0f)
+        {
+            CanDrift= false;
+            if(isdrift)
+            {
+                ExitDrift();
+            }
+           
+        }
     }
 
 
@@ -256,7 +297,7 @@ public class PlayerAction : MonoBehaviour
   public float GetVerticalVelocity() => rb.linearVelocity.y;
     private void Dead()
     {
-        int CurrentHealth = PlayerController.Instance.PlayerHealth;
+        int CurrentHealth = PlayerController.Instance.CurrentPlayerHealth;
         if (CurrentHealth<= 0) 
         { 
             playeranimation.DeadAnim(); 

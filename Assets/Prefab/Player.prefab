@@ -179,10 +179,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   GroundRadius: 0.5
-  PlayerHealth: 5
+  CurrentPlayerHealth: 0
   PlayerSpeed: 7
   JumpVelocity: 22.5
-  DriftSpeed: 15
+  DriftSpeed: 20
+  Stamina: 5
   shouldSpawnOnStart: 1
   defaultSpawnPosition: {x: 0, y: 0, z: 0}
   locomotionState: 0
@@ -203,6 +204,7 @@ MonoBehaviour:
   sword: {fileID: 5783164131759137043}
   flysword: {fileID: 9171049755823359860}
   jumpAttackForwardForce: 10
+  driftTime: 0
 --- !u!95 &3296927085896659894
 Animator:
   serializedVersion: 7

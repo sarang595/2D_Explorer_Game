@@ -37,7 +37,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 2
-    m_ConditionEvent: IsCrouch
+    m_ConditionEvent: IsDrift
     m_EventTreshold: 0
   - m_ConditionMode: 4
     m_ConditionEvent: MoveSpeed
@@ -275,7 +275,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Player_Crouch
+  m_Name: Player_Drift
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -311,7 +311,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: IsCrouch
+  - m_Name: IsDrift
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -461,7 +461,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: IsCrouch
+    m_ConditionEvent: IsDrift
     m_EventTreshold: 0
   - m_ConditionMode: 2
     m_ConditionEvent: Isattack
@@ -520,7 +520,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Isattack
     m_EventTreshold: 0
   - m_ConditionMode: 2
-    m_ConditionEvent: IsCrouch
+    m_ConditionEvent: IsDrift
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 4596161922759557838}
@@ -627,7 +627,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Isattack
     m_EventTreshold: 0
   - m_ConditionMode: 2
-    m_ConditionEvent: IsCrouch
+    m_ConditionEvent: IsDrift
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 8486736768030865896}
@@ -677,7 +677,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 2
-    m_ConditionEvent: IsCrouch
+    m_ConditionEvent: IsDrift
     m_EventTreshold: 0
   - m_ConditionMode: 3
     m_ConditionEvent: MoveSpeed
@@ -708,7 +708,7 @@ AnimatorStateTransition:
     m_ConditionEvent: IsJump
     m_EventTreshold: 0
   - m_ConditionMode: 2
-    m_ConditionEvent: IsCrouch
+    m_ConditionEvent: IsDrift
     m_EventTreshold: 0
   - m_ConditionMode: 1
     m_ConditionEvent: JumpUP
