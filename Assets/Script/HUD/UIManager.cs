@@ -5,13 +5,15 @@ public class UIManager : GameService<UIManager>
 {
     [HideInInspector]
     public Transform Player;
-    [SerializeField] public int PlayerHealth;
-    [SerializeField] public float Stamina;
+    [SerializeField] public int PlayerHealth = 5;
+    [SerializeField] public float Stamina = 5;
     [SerializeField]
     [Range(0,5)] public int MaxHealth = 5;
+ 
 
     private void Start()
     {
+       
         StartCoroutine(InitiatePlayerDelayed());
     }
 
@@ -40,4 +42,19 @@ public class UIManager : GameService<UIManager>
             }
         }
     }
+    public int HealthDamage(int damage)
+    {
+        PlayerController.Instance.isDamage = true;
+        PlayerHealth -= damage;
+        if (PlayerHealth < 0) PlayerHealth = 0;
+        Debug.Log("Player health is now: " + PlayerHealth);  // <-- Add this line
+        DamageReset(0.1f);
+        return PlayerHealth;
+    }
+    IEnumerator DamageReset(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        PlayerController.Instance.isDamage = false;
+    }
+
 }

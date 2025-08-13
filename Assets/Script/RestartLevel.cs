@@ -15,7 +15,7 @@ public class RestartLevel : MonoBehaviour
              HealthBar healthBar = FindAnyObjectByType<HealthBar>();
             if (healthBar != null)
             {
-                player.HealthDamage(_maxDamage);
+                UIManager.Instance.HealthDamage(_maxDamage);
                 healthBar.AllHeartLost();
                 await ReloadScene();
             }
@@ -29,10 +29,12 @@ public class RestartLevel : MonoBehaviour
 }
     private async Awaitable ReloadScene()
     {
+       int _maxHealth = UIManager.Instance.MaxHealth;
         await Awaitable.WaitForSecondsAsync(0.5f);
         HealthBar healthBar = FindAnyObjectByType<HealthBar>();
         if (healthBar != null)
         {
+            UIManager.Instance.PlayerHealth = _maxHealth;
             healthBar.RestoreAllHeart();
             int CurrentSceneIndex = SceneManager.GetActiveScene().buildIndex;
             SceneManager.LoadScene(CurrentSceneIndex);

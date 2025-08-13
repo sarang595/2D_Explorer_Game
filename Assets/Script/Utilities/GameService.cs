@@ -1,8 +1,7 @@
 using UnityEngine;
 
-public class GameService<T> : MonoBehaviour where T: GameService<T>
+public class GameService<T> : MonoBehaviour where T : GameService<T>
 {
-
     private static T instance;
     public static T Instance
     {
@@ -10,28 +9,35 @@ public class GameService<T> : MonoBehaviour where T: GameService<T>
         {
             if (instance == null)
             {
+                // First try to find existing instance
                 instance = FindFirstObjectByType<T>();
+
+                // If still null, create a new GameObject with the component
                 if (instance == null)
                 {
-                    Debug.LogError($"No instance of {typeof(T).Name} found in the scene!");
+                    GameObject _instance = new GameObject(typeof(T).Name);
+                    instance = _instance.AddComponent<T>();
+                    DontDestroyOnLoad(_instance);
                 }
             }
             return instance;
         }
     }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         if (instance == null)
         {
             instance = (T)this;
-            DontDestroyOnLoad(gameObject);  
+            DontDestroyOnLoad(gameObject);
         }
-        else
+        else if (instance != this)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
+            return;
         }
     }
+
     private void OnDestroy()
     {
         if (instance == this)

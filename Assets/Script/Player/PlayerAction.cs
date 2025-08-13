@@ -311,7 +311,7 @@ public class PlayerAction : MonoBehaviour
   public float GetVerticalVelocity() => rb.linearVelocity.y;
     private void Dead()
     {
-        int CurrentHealth = PlayerController.Instance.CurrentPlayerHealth;
+        int CurrentHealth = UIManager.Instance.PlayerHealth;
         if (CurrentHealth<= 0) 
         { 
             playeranimation.DeadAnim(); 

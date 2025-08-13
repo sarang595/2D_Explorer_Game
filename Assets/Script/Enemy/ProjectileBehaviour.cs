@@ -144,7 +144,7 @@ public class ProjectileBehaviour : MonoBehaviour
             PlayerController player = collision.GetComponent<PlayerController>();
             if (player != null)
             {
-               player.HealthDamage(damage); // Apply damage to player
+               UIManager.Instance.HealthDamage(damage); // Apply damage to player
             }
 
             Destroy(gameObject); // Optionally destroy the projectile after hitting

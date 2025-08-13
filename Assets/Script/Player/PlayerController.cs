@@ -23,7 +23,7 @@ public class PlayerController : PlayerService <PlayerController>
 
    [Header("Player Components")]
 
-   public int CurrentPlayerHealth;
+ 
    [SerializeField] public float PlayerSpeed;
    [SerializeField] public float JumpVelocity;
    [SerializeField] public float DriftSpeed;
@@ -53,14 +53,15 @@ public class PlayerController : PlayerService <PlayerController>
     private bool landingFrame;
     private bool wasGrounded; // Track previous frame's grounded state
     private bool PushPower=false;
-    bool isDamage = false;
+    public bool isDamage = false;
    
+
     private void Awake()
     {
               
             // Subscribe to scene loaded event
             SceneManager.sceneLoaded += OnSceneLoaded;
-            CurrentPlayerHealth = UIManager.Instance.PlayerHealth;
+         
 
 
     }
@@ -68,7 +69,7 @@ public class PlayerController : PlayerService <PlayerController>
     void Start()
     {
        
-
+            
         if (shouldSpawnOnStart)
         {
             SpawnPlayer();
@@ -210,32 +211,19 @@ public class PlayerController : PlayerService <PlayerController>
     public bool PlayerDead() => playerDead;
 
  
-    public int HealthDamage(int damage)
-    {
-        isDamage = true;
-        CurrentPlayerHealth -= damage;
-        if (CurrentPlayerHealth < 0) CurrentPlayerHealth = 0;
-        Debug.Log("Player health is now: " + CurrentPlayerHealth);  // <-- Add this line
-        DamageReset(0.1f);
-        return CurrentPlayerHealth;
-    }
-    IEnumerator DamageReset(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        isDamage = false;
-    }
 
+ 
     public bool Isgrounded()
     {
         return Physics2D.OverlapCircle(GroundChecker.position, GroundRadius, GroundLayer);
     }
     public bool Live()
     {
-        if(CurrentPlayerHealth>0)
+        if(UIManager.Instance.PlayerHealth>0)
         {
             live = true;
         }
-        else if(CurrentPlayerHealth<=0)
+        else if(UIManager.Instance.PlayerHealth <= 0)
         {
             
             live = false;

@@ -2213,6 +2213,55 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 622015001}
   m_CullTransparentMesh: 1
+--- !u!1 &649340091
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 649340092}
+  - component: {fileID: 649340093}
+  m_Layer: 0
+  m_Name: UI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &649340092
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 649340091}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 194.52054, y: 917.5914, z: -1.0896482}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1100405492}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &649340093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 649340091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba8fa9ea8dee31c4c9d8b195273d98eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Player: {fileID: 0}
+  PlayerHealth: 5
+  Stamina: 5
+  MaxHealth: 5
 --- !u!1 &652508450
 GameObject:
   m_ObjectHideFlags: 0
@@ -3344,7 +3393,6 @@ GameObject:
   - component: {fileID: 1100405491}
   - component: {fileID: 1100405490}
   - component: {fileID: 1100405489}
-  - component: {fileID: 1100405493}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -3430,29 +3478,13 @@ RectTransform:
   - {fileID: 191392589}
   - {fileID: 970618259}
   - {fileID: 1505736607}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 649340092}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1100405493
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1100405488}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba8fa9ea8dee31c4c9d8b195273d98eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Player: {fileID: 0}
-  PlayerHealth: 5
-  Stamina: 5
-  MaxHealth: 5
 --- !u!1 &1150224221
 GameObject:
   m_ObjectHideFlags: 0
@@ -14450,4 +14482,4 @@ SceneRoots:
   - {fileID: 1453956248}
   - {fileID: 79002173}
   - {fileID: 1984383011}
-  - {fileID: 1100405492}
+  - {fileID: 649340092}
