@@ -26,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6619315606185672814, guid: b97c6536a53f1e94994c89fa0de72b25, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 29.14
+      value: 29.96
       objectReference: {fileID: 0}
     - target: {fileID: 6619315606185672814, guid: b97c6536a53f1e94994c89fa0de72b25, type: 3}
       propertyPath: m_LocalPosition.y
@@ -110,14 +110,13 @@ MonoBehaviour:
   EnemyAimation: {fileID: 157717509731435365}
   PatrolSpeed: 1
   PatrolDistance: 10
-  FovAngle: 75
-  FovRadius: 7.18
+  FovAngle: 90
+  FovRadius: 10
   AttackCoolDown: 0.25
   Projectile: {fileID: 3986664076884215630, guid: 12fa6279e84f9a74db67054e41c65382, type: 3}
   ProjectilePos: {fileID: 4368278925577931419}
   Projectileforce: 5
-  attackCooldown: 0.25
-  Attacktime: 3
+  attackCooldown: 0.15
   enemyMode: 0
 --- !u!58 &4911813075864566500
 CircleCollider2D:
