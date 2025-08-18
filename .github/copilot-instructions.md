@@ -2,7 +2,7 @@
 - Project name: 2D_Explorer_Game
 - Unity version: Unity 6000.0.33f1
 - Active game object:
-  - Name: UI
+  - Name: UI_Canvas
   - Tag: Untagged
-  - Layer: Default
+  - Layer: UI
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->

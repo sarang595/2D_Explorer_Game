@@ -309,7 +309,7 @@ public class PlayerAction : MonoBehaviour
         FlySwordAttackOn();
     }
   public float GetVerticalVelocity() => rb.linearVelocity.y;
-    private void Dead()
+    public void Dead()
     {
         int CurrentHealth = UIManager.Instance.PlayerHealth;
         if (CurrentHealth<= 0) 

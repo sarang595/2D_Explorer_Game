@@ -431,33 +431,38 @@ public class EnemyControl : MonoBehaviour
     }
     private async Awaitable Attack()
     {
-        if (EnemyAimation == null)
-            return;
-
-        EnemyAimation.SetBool("IsSplitterAttack", true);
-
-        await Awaitable.WaitForSecondsAsync(1f);
-
-        if (EnemyAimation == null)
-            return;
-
-        ProjectileBehaviour projectile = Instantiate(Projectile, ProjectilePos.position, ProjectilePos.rotation)?.GetComponent<ProjectileBehaviour>();
-        if (projectile != null)
+        if (PlayerController.Instance.getPlayerState() == PlayerController.PlayerState.Alive)
         {
-            projectile.InitializeProjectile(Player, Projectileforce, Projectiledamage);
+
+            if (EnemyAimation == null)
+                return;
+
+            EnemyAimation.SetBool("IsSplitterAttack", true);
+
+            await Awaitable.WaitForSecondsAsync(1f);
+
+            if (EnemyAimation == null)
+                return;
+
+            ProjectileBehaviour projectile = Instantiate(Projectile, ProjectilePos.position, ProjectilePos.rotation)?.GetComponent<ProjectileBehaviour>();
+            if (projectile != null)
+            {
+                projectile.InitializeProjectile(Player, Projectileforce, Projectiledamage);
+            }
+
+            await Awaitable.WaitForSecondsAsync(0.5f);
+
+            if (EnemyAimation == null)
+                return;
+
+            EnemyAimation.SetBool("IsSplitterAttack", false);
+            EnemyAimation.SetBool("isSplitterAttackDown", true);
+            EnemyAimation.SetBool("IsSplitterWalk", false);
+
+            attackTimer = attackCooldown;
+            Attackcount++;
         }
-
-        await Awaitable.WaitForSecondsAsync(0.5f);
-
-        if (EnemyAimation == null)
-            return;
-
-        EnemyAimation.SetBool("IsSplitterAttack", false);
-        EnemyAimation.SetBool("isSplitterAttackDown", true);
-        EnemyAimation.SetBool("IsSplitterWalk", false);
-
-        attackTimer = attackCooldown;
-        Attackcount++;
+        else return;
     }
 
 

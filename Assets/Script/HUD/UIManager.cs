@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class UIManager : GameService<UIManager>
 {
@@ -8,15 +9,17 @@ public class UIManager : GameService<UIManager>
     [SerializeField] public int PlayerHealth = 5;
     [SerializeField] public float Stamina = 5;
     [SerializeField]
-    [Range(0,5)] public int MaxHealth = 5;
- 
+    [Range(0, 5)] public int MaxHealth = 5;
+    public GameObject gameOverScreen;
+    bool isGameover = false;
+
 
     private void Start()
     {
-       
+
         StartCoroutine(InitiatePlayerDelayed());
     }
-
+    
     private IEnumerator InitiatePlayerDelayed()
     {
         // Wait for other singletons to initialize
@@ -32,7 +35,7 @@ public class UIManager : GameService<UIManager>
             if (playercontrollerInstance != null)
             {
                 this.Player = PlayerController.Instance.transform;
-                
+
             }
             else
             {
@@ -48,6 +51,10 @@ public class UIManager : GameService<UIManager>
         PlayerHealth -= damage;
         if (PlayerHealth < 0) PlayerHealth = 0;
         Debug.Log("Player health is now: " + PlayerHealth);  // <-- Add this line
+        if (PlayerHealth <= 0 && !isGameover)
+        {
+            LoadGameOver();
+        }
         DamageReset(0.1f);
         return PlayerHealth;
     }
@@ -57,4 +64,38 @@ public class UIManager : GameService<UIManager>
         PlayerController.Instance.isDamage = false;
     }
 
+    public async void LoadGameOver()
+    {
+        if (isGameover) return;
+        if (PlayerController.Instance == null) return;
+        PlayerAction _playerAction = PlayerController.Instance.GetComponent<PlayerAction>();
+        if (PlayerController.Instance.getPlayerState() == PlayerController.PlayerState.Dead)
+        {
+            _playerAction.Dead();
+            await GameOverscene();
+        
+        }
+
+    }
+    private async Awaitable GameOverscene()
+    {
+        isGameover = true;
+        await Awaitable.WaitForSecondsAsync(0.8f);
+        gameOverScreen.SetActive(true);
+
+    }
+    public  void ReloadScene()
+    {
+        int CurrentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        gameOverScreen.SetActive(false);
+        HealthBar healthBar = FindAnyObjectByType<HealthBar>();
+        if (healthBar != null)
+        {
+            PlayerHealth = MaxHealth;
+            healthBar.RestoreAllHeart();
+            SceneManager.LoadScene(CurrentSceneIndex);
+
+        }
+
+    }
 }
