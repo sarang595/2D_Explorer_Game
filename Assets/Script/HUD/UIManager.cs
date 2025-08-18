@@ -133,6 +133,7 @@ public class UIManager : GameService<UIManager>
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        isGameover = false;
         isReloaded = true;
         if (LoadingScreen != null)
         {
